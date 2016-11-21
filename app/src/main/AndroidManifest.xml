@@ -21,7 +21,9 @@
                   android:launchMode="singleTop"/>
 
         <activity android:name=".GameCompleteActivity"
-            android:launchMode="singleTop"/>
+        android:launchMode="singleTop"/>
+
+        <activity android:name=".LoginUserActivity"/>
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"

@@ -1,36 +1,48 @@
 package edu.msu.perrym23.project1;
 
 import android.util.Log;
-import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Server {
 
-    private static final String LOGIN_URL = "http://cse.msu.edu/~perrym23/cse476/project2/login.php";
-    private static final String CREATE_USER_URL = "http://cse.msu.edu/~elhazzat/cse476/project2/newuser.php";
+    private static final String LOGIN_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php";
+    private static final String CREATE_USER_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/newuser.php";
+    private static final String QUIT_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
     private static final String UTF8 = "UTF-8";
 
     /**
      * Have we been told to cancel?
      */
     private boolean cancel = false;
+
+    public void quitGame(String usr) {
+        String query = QUIT_GAME + "?username=" + usr;
+
+        try {
+            URL url = new URL(query);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if(responseCode != HttpURLConnection.HTTP_OK) {
+                return;
+            }
+        }  catch (MalformedURLException e) {
+            // Should never happen
+            return;
+        } catch (IOException ex) {
+        }
+    }
+
 
     /**
      * Send the server a username and password to login
@@ -85,11 +97,14 @@ public class Server {
         // Create the get query
         String query = CREATE_USER_URL + "?username=" + usr + "&password=" + password;
 
+        Log.i("query: ", query);
+
         InputStream stream = null;
         try {
             URL url = new URL(query);
 
             if (cancel) { return false; }
+            Log.i("response: ", "made it in");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {

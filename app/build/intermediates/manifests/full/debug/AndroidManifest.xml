@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.msu.perrym23.project1"
+    android:versionCode="2"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        <activity android:name="edu.msu.perrym23.project1.GameSelectionActivity" />
+        <activity android:name="edu.msu.perrym23.project1.SplashScreenActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="edu.msu.perrym23.project1.GameActivity"
+            android:label="@string/title_activity_game"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="edu.msu.perrym23.project1.GameCompleteActivity"
+            android:launchMode="singleTop" />
+        <activity android:name="edu.msu.perrym23.project1.LoginUserActivity" />
+
+        <meta-data
+            android:name="net.hockeyapp.android.appIdentifier"
+            android:value="5bfe4d69dd814a529ff758db0a2dc2ef" />
+
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <activity android:name="net.hockeyapp.android.FeedbackActivity" />
+        <activity android:name="net.hockeyapp.android.PaintActivity" />
+        <activity android:name="net.hockeyapp.android.LoginActivity" />
+        <activity android:name="net.hockeyapp.android.ExpiryInfoActivity" />
+    </application>
+
+</manifest>

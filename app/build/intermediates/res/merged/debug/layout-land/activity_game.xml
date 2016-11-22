@@ -1,0 +1,160 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="edu.msu.perrym23.project1.GameActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/deep_purple"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/deep_purple"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/deep_purple"
+                android:padding="16dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/install"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_wrench"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/black"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/install"
+                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/forfeit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_flag_waving"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/black"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/forfeit"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@color/deep_purple"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/discard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_rubbish_bin"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/black"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discard"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_gas_pipe"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/black"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:text="@string/open"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/currentPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:maxEms="6"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="@string/roy_it_s_your_turn"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/bat_player"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_flying_bat" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <edu.msu.perrym23.project1.GameView
+        android:id="@+id/gameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white" />
+
+</LinearLayout>

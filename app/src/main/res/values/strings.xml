@@ -68,8 +68,11 @@
     <string name="christmas_edition">Christmas Edition</string>
     <string name="please_wait">Please Wait...</string>
     <string name="creating_user">Creating user...</string>
+    <string name="logging_in_user">Loging in user...</string>
     <string name="create_user_success">User created successfully!</string>
+    <string name="logged_in_user_success">User logged in successfully!</string>
     <string name="create_user_fail">Failed to create user!</string>
+    <string name="login_user_fail">Failed to login user!</string>
     <string name="verify_error">Passwords do not match!</string>
     <string name="create">create</string>
     <string name="cancel">Cancel</string>

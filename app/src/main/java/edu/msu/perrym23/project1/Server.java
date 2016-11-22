@@ -45,10 +45,10 @@ public class Server {
 
 
     /**
-     * Send the server a username and password to login
-     * @param usr The username
-     * @param password The user's password
-     * @return true if the login was successful
+     * Send the server a new username and password to create a new user
+     * @param usr The new username
+     * @param password The new user's password
+     * @return true if the new user was successfully created
      */
     public boolean login(String usr, String password) {
         // Create the get query
@@ -64,6 +64,7 @@ public class Server {
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 return false;
             }
+
             stream = conn.getInputStream();
             if(serverFailed(stream)) {
                 return false;

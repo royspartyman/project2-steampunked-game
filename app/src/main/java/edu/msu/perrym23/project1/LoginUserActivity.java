@@ -26,32 +26,14 @@ public class LoginUserActivity extends AppCompatActivity{
 
     @OnClick(R.id.login)
     public void onLoginClick(){
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialogue_login_user, null);
-
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Login");
-        dialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
+        LoginUserDialogue loginUserDialogue = new LoginUserDialogue();
+        loginUserDialogue.show(getFragmentManager(), "login");
     }
 
     @OnClick(R.id.new_user)
     public void onNewUserClick(){
-       CreateUserDialogue createUserDialogue = new CreateUserDialogue();
-        createUserDialogue.show(getFragmentManager(), "create");
+        CreateUserDialogue createUserDialogue = new CreateUserDialogue();
+        createUserDialogue.show(getFragmentManager(), "login");
     }
 
     @Override

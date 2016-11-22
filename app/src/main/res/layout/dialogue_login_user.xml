@@ -18,7 +18,7 @@
             />
 
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cursorVisible="false"
@@ -48,7 +48,8 @@
             android:cursorVisible="false"
             android:maxLength="12"
             android:imeOptions="actionDone"
-            android:hint="@string/password" />
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 

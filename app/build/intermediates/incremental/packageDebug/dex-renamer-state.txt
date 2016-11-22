@@ -1,4 +1,0 @@
-#Tue Nov 22 13:30:43 CST 2016
-base.0=/Users/williamrudnick/Desktop/CSE476/project2-steampunked-game/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
-renamed.0=classes.dex
-file.0=/Users/williamrudnick/Desktop/CSE476/project2-steampunked-game/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex

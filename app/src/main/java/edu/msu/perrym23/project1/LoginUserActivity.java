@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class LoginUserActivity extends AppCompatActivity{
 
     @BindView(R.id.login)
@@ -28,6 +27,10 @@ public class LoginUserActivity extends AppCompatActivity{
     public void onLoginClick(){
         LoginUserDialogue loginUserDialogue = new LoginUserDialogue();
         loginUserDialogue.show(getFragmentManager(), "login");
+        if (loginUserDialogue.isVisible()) {
+            setContentView(R.layout.activity_game_selection);
+        }
+
     }
 
     @OnClick(R.id.new_user)
@@ -41,6 +44,10 @@ public class LoginUserActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_user);
         ButterKnife.bind(this);
+    }
+
+    public void isValid() {
+
     }
 
 

@@ -1,5 +1,6 @@
 package edu.msu.perrym23.project1;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,6 +20,8 @@ public class LoginUserDialogue extends DialogFragment {
      * The alert dialog box
      */
     private AlertDialog dlg;
+
+    public boolean validUser = false;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -88,6 +91,16 @@ public class LoginUserDialogue extends DialogFragment {
                             R.string.logged_in_user_success,
                             Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
+
+
+                    // Yo Roy! This is where I'm trying shit
+                    // Hope you have better luck than I do!
+                    // - Will Rudnick
+
+                    validUser = true;
+                    LoginUserDialogue.this.getActivity().setContentView(R.layout.activity_game_selection);
+
+
                 } else {
                     Toast.makeText(dlg.getContext(),
                             R.string.login_user_fail,

@@ -17,31 +17,12 @@ public class Server {
 
     private static final String LOGIN_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php";
     private static final String CREATE_USER_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/newuser.php";
-    private static final String QUIT_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
     private static final String UTF8 = "UTF-8";
 
     /**
      * Have we been told to cancel?
      */
     private boolean cancel = false;
-
-    public void quitGame(String usr) {
-        String query = QUIT_GAME + "?username=" + usr;
-
-        try {
-            URL url = new URL(query);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
-                return;
-            }
-        }  catch (MalformedURLException e) {
-            // Should never happen
-            return;
-        } catch (IOException ex) {
-        }
-    }
 
 
     /**

@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/deep_purple"
+        android:background="@color/red"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_wrench"
-                app:backgroundTint="@color/black"
+                app:backgroundTint="@color/green"
                 android:tint="@color/white"
                 app:elevation="6dp"
                 app:fabSize="mini" />
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_flag_waving"
-                app:backgroundTint="@color/black"
+                app:backgroundTint="@color/green"
                 android:tint="@color/white"
                 app:elevation="6dp"
                 app:fabSize="mini" />
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_rubbish_bin"
-                app:backgroundTint="@color/black"
+                app:backgroundTint="@color/green"
                 android:tint="@color/white"
                 app:elevation="6dp"
                 app:fabSize="mini" />
@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_gas_pipe"
-                app:backgroundTint="@color/black"
+                app:backgroundTint="@color/green"
                 android:tint="@color/white"
                 app:elevation="6dp"
                 android:padding="8dp"

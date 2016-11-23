@@ -1,0 +1,55 @@
+
+Project 2 Submission
+
+Group Name:   Steamy_Ho_Ho_Hos
+
+When you have completed the project, complete the following form and include it with your project. Include this file as a text file in the folder with your project when you turn it in. 
+
+For the Checkpoint, Describe a sequence of operations to create a new account and log onto the server:
+
+A functionality checklist will not be provided for the project. Treat this as you would a request from a client and identify what the client requires. 
+
+
+** We all worked oaths together really. No one did more than the other (:
+
+Member 1: Roy Perryman
+
+Responsiblity:
+
+PHP and onClick functionality.
+
+
+Member 2: Will Rudnick
+
+Responsiblity:
+
+
+PHP and SQL in app functionality.
+
+
+Member 3: Laura Robb
+
+Responsiblity:
+
+PHP and layout functionality.
+
+
+
+Provide instructions on how to reach the first editing activity if the login button is not yet functional.
+
+1.)Click the New User button
+2.) Make an account
+3.) Proceed to login with that account
+4.) If that login doesn’t work use the username: mic pass: mic
+
+
+User account the server-side communications is running under: perrym23
+
+Paths to all server-side scripts: (Such as https://www.cse.msu.edu/~carter/project2/login.php).
+
+http://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php
+
+Calls in the code to the server (provide a class name and function, or URL used for debugging):
+
+Class Server and calls are made in the LoginUserActivity.
+

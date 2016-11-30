@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.msu.perrym23.project1">
+    package="edu.msu.perrym23.project2" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".GameSelectionActivity" />
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+
         <activity android:name=".SplashScreenActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".GameActivity"
-                  android:label="@string/title_activity_game"
-                  android:launchMode="singleTop"/>
+        <activity android:name=".LoginUserActivity"
+            android:launchMode="singleTop"/>
 
-        <activity android:name=".GameCompleteActivity"
-        android:launchMode="singleTop"/>
-
-        <activity android:name=".LoginUserActivity"/>
-
-        <meta-data
-            android:name="net.hockeyapp.android.appIdentifier"
-            android:value="${HOCKEYAPP_APP_ID}" />
-
+        <activity
+            android:name="edu.msu.perrym23.project2.GameActivity"
+            android:label="@string/title_activity_game"
+            android:launchMode="singleTop">
+        </activity>
+        <activity
+            android:name="edu.msu.perrym23.project2.EndGameActivity"
+            android:label="@string/title_activity_end_game"
+            android:launchMode="singleTop">
+        </activity>
     </application>
 
 </manifest>

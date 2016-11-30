@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/green"
     android:orientation="vertical"
-    tools:context="edu.msu.perrym23.project1.GameSelectionActivity">
+    tools:context="edu.msu.perrym23.project2.LoginUserActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,6 +61,45 @@
             android:text="@string/new_user"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/fivebyfive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/_5_x_5"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/tenbyten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/_10_x_10"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/twentybytwenty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/_20_x_20"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone"
             android:layout_margin="8dp"
             android:gravity="center_horizontal|center_vertical"
             android:textColor="@color/colorAccent" />

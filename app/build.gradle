@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "edu.msu.perrym23.project1"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 2
         versionName "1.0"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "5bfe4d69dd814a529ff758db0a2dc2ef"]
@@ -28,10 +29,11 @@ dependencies {
     })
 
     compile 'net.hockeyapp.android:HockeySDK:4.1.1'
-    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:23.0.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.google.android.gms:play-services:8.3.0'
 }

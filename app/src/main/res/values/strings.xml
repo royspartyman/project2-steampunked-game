@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project1</string>
+    <string name="app_name">Project2</string>
     <string name="steampunked">Steampunked</string>
     <string name="title_activity_end_game">EndGameActivity</string>
     <string name="player1">Player 1</string>
@@ -76,5 +76,30 @@
     <string name="verify_error">Passwords do not match!</string>
     <string name="create">create</string>
     <string name="cancel">Cancel</string>
+
+    <string name="verify">Verify</string>
+    <string name="remember_me">Remember me</string>
+    <string name="instructions">How To Play</string>
+    <string name="quit_game">Quit Game</string>
+    <string name="quit_game_confirmation">Are you sure you want to quit the game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="steampunked_logo">Steampunked logo.</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="login_fail">Failed to log in</string>
+    <string name="login_success">Successfully logged in</string>
+    <string name="password_length_error">Password must be at least 8 characters</string>
+    <string name="logout">Logout</string>
+
+    <string name="hold_horses">Hold your horses!</string>
+    <string name="waiting_for_p2">Waiting for second player...</string>
+    <string name="initializing">Initializing game...</string>
+    <string name="init_fail">Failed to join game</string>
+    <string name="loading_game">Loading game...</string>
+    <string name="loading_fail">Failed to load game, trying again.</string>
+    <string name="waiting_for">Waiting for</string>
+    <string name="uploading">Uploading game...</string>
+    <string name="upload_fail">Failed to upload game, trying again.</string>
+    <string name="Logout">Logout</string>
 
 </resources>

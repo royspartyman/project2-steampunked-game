@@ -46,48 +46,31 @@ public class Server {
 
     public String getPlayerTwo(String usr) {
         String query = GET_PLAYER_TWO + "?username=" + usr;
+        String name = "";
 
-        InputStream stream = null;
         try {
             URL url = new URL(query);
 
-            if (cancel) { return ""; }
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                return "";
+            if(responseCode != HttpURLConnection.HTTP_OK) {
+                return null;
             }
 
-            stream = conn.getInputStream();
-            if(serverFailed(stream)) {
-                return "";
+            InputStream stream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+               name = line;
             }
+            return name;
 
         } catch (MalformedURLException e) {
+            // Should never happen
             return "";
         } catch (IOException ex) {
             return "";
-        } finally {
-            if(stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException ex) {
-                    // Fail silently
-                }
-            }
         }
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-        try {
-            line = reader.readLine();
-            Log.i("game", line);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
-
     }
 
     public void quitGame(String usr) {

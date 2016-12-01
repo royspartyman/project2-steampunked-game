@@ -33,6 +33,8 @@ public class GameActivity extends AppCompatActivity {
     private final static String IS_PLAYER_ONE = "is_player_one";
     private final static String IS_PLAYER_TWO = "is_player_two";
 
+    private boolean joined = false;
+
     Server server = new Server();
 
     private Handler waitForPlayerTwoHandler;
@@ -121,7 +123,7 @@ public class GameActivity extends AppCompatActivity {
         checkGameReady(playerOneName);
     }
 
-    private void checkGameReady(String usr) {
+    private void checkGameReady(final String usr) {
 
         new AsyncTask<String, Void, Boolean>() {
 
@@ -141,9 +143,37 @@ public class GameActivity extends AppCompatActivity {
             protected void onPostExecute(Boolean success) {
                 if (success) {
                     Log.i("success", "joined");
+                    joined = true;
+                    joinedSuccess();
                     waitForPlayerTwoHandler.removeCallbacksAndMessages(null);
-                    startGame();
                 }
+            }
+        }.execute(usr);
+    }
+
+    private void joinedSuccess(){
+        getPlayerTwo(playerOneName);
+    }
+
+    private void getPlayerTwo(final String usr) {
+
+        new AsyncTask<String, String, String>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String name = server.getPlayerTwo(params[0]);
+                Log.i("player two", name);
+                return name;
+            }
+
+            @Override
+            protected void onPostExecute(String name) {
+                    playerTwoName = name;
             }
         }.execute(usr);
     }

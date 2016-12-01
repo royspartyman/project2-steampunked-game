@@ -2,20 +2,16 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -42,25 +38,25 @@ public class LoginUserActivity extends AppCompatActivity {
     List<Button> gameSizeButtons;
 
     @OnClick(R.id.fivebyfive)
-    public void onFiveClick(){
+    public void onFiveClick() {
         boardSize = GameView.dimension.SMALL;
         newGame(this.getCurrentFocus());
     }
 
     @OnClick(R.id.tenbyten)
-    public void onTenClick(){
+    public void onTenClick() {
         boardSize = GameView.dimension.MEDIUM;
         newGame(this.getCurrentFocus());
     }
 
     @OnClick(R.id.twentybytwenty)
-    public void onTwentyClick(){
+    public void onTwentyClick() {
         boardSize = GameView.dimension.LARGE;
         newGame(this.getCurrentFocus());
     }
 
     @OnClick(R.id.new_user)
-    public void OnNewUserClick(){
+    public void OnNewUserClick() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialogue_new_user, null);
@@ -82,7 +78,7 @@ public class LoginUserActivity extends AppCompatActivity {
                             Toast.makeText(dialogView.getContext(),
                                     R.string.verify_error,
                                     Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             createUser(user, pass);
                         }
                     }
@@ -100,11 +96,11 @@ public class LoginUserActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://steampunked-6e10c.firebaseio.com";
 
     @OnClick(R.id.login)
-    public void onLoginClick(){
-        if(isLoggedIn){
+    public void onLoginClick() {
+        if (isLoggedIn) {
             isLoggedIn = false;
             updateUI();
-        }else {
+        } else {
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
             LayoutInflater inflater = this.getLayoutInflater();
@@ -168,7 +164,7 @@ public class LoginUserActivity extends AppCompatActivity {
 
                 @Override
                 protected Boolean doInBackground(String... params) {
-                    boolean success = server.joinGame(params[0], params[1]);
+                    boolean success = server.joinGame(params[0]);
                     return success;
                 }
 
@@ -182,8 +178,8 @@ public class LoginUserActivity extends AppCompatActivity {
                         // Start the game as player 1
                         intent.putExtra(GameActivity.AM_PLAYER_ONE, true);
                         intent.putExtra(GameView.BOARD_SIZE, boardSize);
+                        intent.putExtra(GameActivity.MY_NAME, username);
                     }
-                    intent.putExtra(GameActivity.MY_NAME, username);
                     startActivity(intent);
                 }
             }.execute(username, "");
@@ -228,14 +224,15 @@ public class LoginUserActivity extends AppCompatActivity {
                     Toast.makeText(loginDlg.getContext(),
                             R.string.logged_in_user_success,
                             Toast.LENGTH_SHORT).show();
-                            isLoggedIn = true;
-                            updateUI();
+                    isLoggedIn = true;
+                    updateUI();
                     loginDlg.dismiss();
                 } else {
                     Toast.makeText(loginDlg.getContext(),
                             R.string.login_user_fail,
                             Toast.LENGTH_LONG).show();
-                            isLoggedIn = false;
+                    isLoggedIn = false;
+                    loginDlg.dismiss();
                 }
             }
         }.execute(usr, pass);
@@ -278,13 +275,13 @@ public class LoginUserActivity extends AppCompatActivity {
                     Toast.makeText(createUserDlg.getContext(),
                             R.string.create_user_success,
                             Toast.LENGTH_SHORT).show();
-                            newUserMade = true;
+                    newUserMade = true;
                     createUserDlg.dismiss();
                 } else {
                     Toast.makeText(createUserDlg.getContext(),
                             R.string.create_user_fail,
                             Toast.LENGTH_LONG).show();
-                            newUserMade = false;
+                    newUserMade = false;
                 }
             }
         }.execute(usr, pass);

@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,8 @@ public class GameActivity extends AppCompatActivity {
     private final static String O_NAME = "opponent_name";
     private final static String AM_P1 = "am_player_one";
 
+    private Handler handler;
+
     private String myName = "";
     private String opponentName = "";
     private boolean amPlayerOne;
@@ -39,34 +43,76 @@ public class GameActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private boolean startGame = false;
 
+    private Server server = new Server();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-
         if(savedInstanceState != null) {
             myName = savedInstanceState.getString(P_NAME);
             opponentName = savedInstanceState.getString(O_NAME);
             amPlayerOne = savedInstanceState.getBoolean(AM_P1);
-
             getGameView().loadState(savedInstanceState);
         } else { // There is no saved state, use the intent for initialization
             Intent intent = getIntent();
             myName = intent.getStringExtra(MY_NAME);
             amPlayerOne = intent.getBooleanExtra(AM_PLAYER_ONE, false);
-
             if (amPlayerOne) {
                 getGameView().initialize(intent);
                 uploadGameState(Server.GamePostMode.CREATE);
                 waitForPlayerTwo();
-            } else {
-                getInitialGame();
+            }else{
+                waitForPlayerOne();
             }
         }
-
-        IntentFilter intentFilter = new IntentFilter();
         updateUI();
+    }
+
+    public void startHandler()
+    {
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                callAysncTask();
+                handler.postDelayed(this, 1000);
+            }
+        }, 5000);  //the time is in miliseconds
+    }
+
+    private void callAysncTask()
+    {
+        checkGameReady(myName);
+    }
+
+    private void checkGameReady(String usr) {
+
+        new AsyncTask<String, Void, Boolean>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+                Server server = new Server();
+                boolean success = server.gameReady(params[0]);
+                Log.i("success", "waiting");
+                return success;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+                    Log.i("success", "joined");
+                    handler.removeCallbacksAndMessages(null);
+                    startGame();
+                }
+            }
+        }.execute(usr);
     }
 
     public void loadFromXML(XmlPullParser xml, String obj) throws IOException, XmlPullParserException {
@@ -117,16 +163,27 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void waitForPlayerOne() {
+        if (!startGame) {
+            progressDialog = ProgressDialog.show(GameActivity.this,
+                    getString(R.string.hold_horses),
+                    getString(R.string.waiting_for_p1), true, false);
+        }
+    }
+
     private void waitForPlayerTwo() {
         if (!startGame) {
             progressDialog = ProgressDialog.show(GameActivity.this,
                     getString(R.string.hold_horses),
                     getString(R.string.waiting_for_p2), true, false);
+            startHandler();
         }
     }
 
     private void startGame() {
-        progressDialog.dismiss();
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         startGame = true;
         startTurn();
     }
@@ -140,7 +197,6 @@ public class GameActivity extends AppCompatActivity {
     private void getInitialGame() {
         new AsyncTask<String, Void, Boolean>() {
 
-            private ProgressDialog progressDialog;
             private Server server = new Server();
             private volatile boolean cancel = false;
             private volatile String p1;
@@ -150,14 +206,6 @@ public class GameActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(GameActivity.this,
-                        getString(R.string.initializing),
-                        null, true, true, new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                cancel = true;
-                            }
-                        });
             }
 
             @Override
@@ -195,7 +243,6 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean success) {
-                progressDialog.dismiss();
                 if (success) {
                     GameView.dimension size = GameView.dimension.SMALL;
                     switch (dim) {
@@ -379,7 +426,6 @@ public class GameActivity extends AppCompatActivity {
 
     private class UploadTask extends AsyncTask<String, Void, Boolean> {
 
-        private ProgressDialog progressDialog;
         private Server server = new Server();
         private GameActivity game;
         private Server.GamePostMode uploadMode;
@@ -387,14 +433,6 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(GameActivity.this,
-                    getString(R.string.uploading),
-                    null, true, true, new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            server.cancel();
-                        }
-                    });
         }
 
         public void setGame(GameActivity act) {
@@ -406,13 +444,12 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            boolean success = server.sendGameState(params[0], game, uploadMode, params[1]);
+            boolean success = server.sendGameState(params[0], game, uploadMode);
             return success;
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
-            progressDialog.dismiss();
             if (!success) {
                 Toast.makeText(GameActivity.this,
                         R.string.upload_fail,

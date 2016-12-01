@@ -30,6 +30,8 @@ public class Server {
     private static final String UPDATE_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/updategame.php";
     private static final String GET_GAME_STATUS = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getgamestatus.php";
     private static final String QUIT_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
+    private static final String GAME_READY = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
+    private static final String CHANGE_TURN = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
     private static final String UTF8 = "UTF-8";
 
     private boolean cancel = false;
@@ -54,6 +56,77 @@ public class Server {
             return;
         } catch (IOException ex) {
         }
+    }
+
+    public boolean changeTurn(String usr) {
+        String query = CHANGE_TURN + "?username=" + usr;
+
+        InputStream stream = null;
+        try {
+            URL url = new URL(query);
+
+            if (cancel) { return false; }
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return false;
+            }
+
+            stream = conn.getInputStream();
+            if(serverFailed(stream)) {
+                return false;
+            }
+
+        } catch (MalformedURLException e) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        } finally {
+            if(stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException ex) {
+                    // Fail silently
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean gameReady(String usr) {
+        String query = GAME_READY + "?username=" + usr;
+
+        InputStream stream = null;
+        try {
+            URL url = new URL(query);
+
+            if (cancel) { return false; }
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return false;
+            }
+
+            stream = conn.getInputStream();
+            if(serverFailed(stream)) {
+                return false;
+            }
+
+        } catch (MalformedURLException e) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        } finally {
+            if(stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException ex) {
+                    // Fail silently
+                }
+            }
+        }
+
+        return true;
     }
 
     public InputStream getGameState(String usr) {
@@ -85,7 +158,7 @@ public class Server {
     }
 
 
-    public boolean sendGameState(String usr, GameActivity game, GamePostMode mode, String token) {
+    public boolean sendGameState(String usr, GameActivity game, GamePostMode mode) {
         XmlSerializer xml = Xml.newSerializer();
         StringWriter writer = new StringWriter();
 
@@ -119,7 +192,7 @@ public class Server {
             String query;
             switch(mode) {
                 case CREATE:
-                    query = CREATE_NEW_GAME + "?username=" + usr + "&token=" + token;
+                    query = CREATE_NEW_GAME + "?username=" + usr;
                     break;
                 case UPDATE:
                     query = UPDATE_GAME + "?username=" + usr;
@@ -169,9 +242,9 @@ public class Server {
         return true;
     }
 
-    public boolean joinGame(String usr, String token) {
+    public boolean joinGame(String usr) {
 
-        String query = JOIN_GAME + "?username=" + usr + "&token=" + token;
+        String query = JOIN_GAME + "?username=" + usr;
 
         InputStream stream = null;
         try {

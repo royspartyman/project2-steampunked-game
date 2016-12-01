@@ -92,6 +92,7 @@
     <string name="logout">Logout</string>
 
     <string name="hold_horses">Hold your horses!</string>
+    <string name="waiting_for_p1">Waiting for first player...</string>
     <string name="waiting_for_p2">Waiting for second player...</string>
     <string name="initializing">Initializing game...</string>
     <string name="init_fail">Failed to join game</string>

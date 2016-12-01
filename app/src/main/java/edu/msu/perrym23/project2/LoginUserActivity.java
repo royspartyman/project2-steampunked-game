@@ -37,24 +37,28 @@ public class LoginUserActivity extends AppCompatActivity {
     @BindViews({R.id.fivebyfive, R.id.tenbyten, R.id.twentybytwenty})
     List<Button> gameSizeButtons;
 
+    /* Start 5x5 game */
     @OnClick(R.id.fivebyfive)
     public void onFiveClick() {
         boardSize = GameView.dimension.SMALL;
         newGame(this.getCurrentFocus());
     }
 
+    /* Start 10x10 game */
     @OnClick(R.id.tenbyten)
     public void onTenClick() {
         boardSize = GameView.dimension.MEDIUM;
         newGame(this.getCurrentFocus());
     }
 
+    /* Start 20x20 game */
     @OnClick(R.id.twentybytwenty)
     public void onTwentyClick() {
         boardSize = GameView.dimension.LARGE;
         newGame(this.getCurrentFocus());
     }
 
+    /* Open new user dialogue */
     @OnClick(R.id.new_user)
     public void OnNewUserClick() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -93,8 +97,7 @@ public class LoginUserActivity extends AppCompatActivity {
         createUserAlertDialog.show();
     }
 
-    public static final String BASE_URL = "https://steampunked-6e10c.firebaseio.com";
-
+    /* Open login dialogue */
     @OnClick(R.id.login)
     public void onLoginClick() {
         if (isLoggedIn) {
@@ -138,9 +141,9 @@ public class LoginUserActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    /* Start a new game */
     public void newGame(View view) {
-
-        // If we're logged in then we need to start a new game.
+        //Only can start a new game if we are logged in!
         if (isLoggedIn) {
             new AsyncTask<String, Void, Boolean>() {
                 private ProgressDialog progressDialog;
@@ -150,7 +153,6 @@ public class LoginUserActivity extends AppCompatActivity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    // TODO: change strings
                     progressDialog = ProgressDialog.show(LoginUserActivity.this,
                             getString(R.string.please_wait),
                             getString(R.string.logging_in),
@@ -172,13 +174,14 @@ public class LoginUserActivity extends AppCompatActivity {
                 protected void onPostExecute(Boolean success) {
                     progressDialog.dismiss();
                     if (success) {
-                        // Start the game as player 2
-                        intent.putExtra(GameActivity.AM_PLAYER_ONE, false);
+                        //Game is starting with Player 2 waiting on Player 1
+                        intent.putExtra(GameActivity.PLAYER_TWO_NAME, username);
+                        intent.putExtra(GameActivity.PLAYER_ONE_STARTING, false);
                     } else {
-                        // Start the game as player 1
-                        intent.putExtra(GameActivity.AM_PLAYER_ONE, true);
+                        //Game is starting with Player 1 waiting for Player 2 to join
+                        intent.putExtra(GameActivity.PLAYER_ONE_STARTING, true);
                         intent.putExtra(GameView.BOARD_SIZE, boardSize);
-                        intent.putExtra(GameActivity.MY_NAME, username);
+                        intent.putExtra(GameActivity.PLAYER_ONE_NAME, username);
                     }
                     startActivity(intent);
                 }
@@ -186,8 +189,8 @@ public class LoginUserActivity extends AppCompatActivity {
         }
     }
 
+    /* Attempt to login the user */
     private void loginUser(String usr, final String pass) {
-
         new AsyncTask<String, Void, Boolean>() {
             private ProgressDialog progressDialog;
             private Server server = new Server();
@@ -238,8 +241,8 @@ public class LoginUserActivity extends AppCompatActivity {
         }.execute(usr, pass);
     }
 
+    /* Create the user in the table */
     private void createUser(String usr, final String pass) {
-
         new AsyncTask<String, Void, Boolean>() {
 
             private ProgressDialog progressDialog;
@@ -287,6 +290,7 @@ public class LoginUserActivity extends AppCompatActivity {
         }.execute(usr, pass);
     }
 
+    /* Change the layout if logged in / logged out */
     private void updateUI() {
         if (isLoggedIn) {
             loginButton.setText(R.string.Logout);

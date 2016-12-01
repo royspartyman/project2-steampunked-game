@@ -7,8 +7,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +34,7 @@ public class Server {
     private static final String QUIT_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
     private static final String GAME_READY = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
     private static final String CHANGE_TURN = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
+    private static final String GET_PLAYER_TWO = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayertwo.php";
     private static final String UTF8 = "UTF-8";
 
     private boolean cancel = false;
@@ -39,6 +42,52 @@ public class Server {
     public enum GamePostMode {
         CREATE,
         UPDATE
+    }
+
+    public String getPlayerTwo(String usr) {
+        String query = GET_PLAYER_TWO + "?username=" + usr;
+
+        InputStream stream = null;
+        try {
+            URL url = new URL(query);
+
+            if (cancel) { return ""; }
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return "";
+            }
+
+            stream = conn.getInputStream();
+            if(serverFailed(stream)) {
+                return "";
+            }
+
+        } catch (MalformedURLException e) {
+            return "";
+        } catch (IOException ex) {
+            return "";
+        } finally {
+            if(stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException ex) {
+                    // Fail silently
+                }
+            }
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+        try {
+            line = reader.readLine();
+            Log.i("game", line);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+
     }
 
     public void quitGame(String usr) {

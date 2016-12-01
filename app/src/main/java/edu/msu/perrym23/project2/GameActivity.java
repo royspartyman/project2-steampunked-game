@@ -2,11 +2,8 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,64 +24,101 @@ import java.io.InputStream;
 
 public class GameActivity extends AppCompatActivity {
 
-    public final static String MY_NAME = "edu.msu.perrym23.project2.MY_NAME";
-    public final static String AM_PLAYER_ONE = "edu.msu.perrym23.project2.AM_PLAYER_ONE";
+    public final static String PLAYER_ONE_NAME = "edu.msu.perrym23.project2.PLAYER_ONE_NAME";
+    public final static String PLAYER_TWO_NAME = "edu.msu.perrym23.project2.PLAYER_TWO_NAME";
+    public final static String PLAYER_ONE_STARTING = "edu.msu.perrym23.project2.PLAYER_ONE_STARTING";
 
-    private final static String P_NAME = "my_name";
-    private final static String O_NAME = "opponent_name";
-    private final static String AM_P1 = "am_player_one";
+    private final static String P1_NAME = "p1_name";
+    private final static String P2_NAME = "p2_name";
+    private final static String IS_PLAYER_ONE = "is_player_one";
+    private final static String IS_PLAYER_TWO = "is_player_two";
 
-    private Handler handler;
+    Server server = new Server();
 
-    private String myName = "";
-    private String opponentName = "";
-    private boolean amPlayerOne;
+    private Handler waitForPlayerTwoHandler;
+    private Handler waitForPlayerOneHandler;
+
+    private String playerOneName = "";
+    private String playerTwoName = "";
+    private boolean isPlayerOne;
+    private boolean isPlayerTwo;
 
     private ProgressDialog progressDialog;
     private boolean startGame = false;
-
-    private Server server = new Server();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
         if(savedInstanceState != null) {
-            myName = savedInstanceState.getString(P_NAME);
-            opponentName = savedInstanceState.getString(O_NAME);
-            amPlayerOne = savedInstanceState.getBoolean(AM_P1);
+            playerOneName = savedInstanceState.getString(P1_NAME);
+            playerTwoName = savedInstanceState.getString(P2_NAME);
+            isPlayerOne = savedInstanceState.getBoolean(IS_PLAYER_ONE);
+            isPlayerTwo = savedInstanceState.getBoolean(IS_PLAYER_TWO);
             getGameView().loadState(savedInstanceState);
         } else { // There is no saved state, use the intent for initialization
             Intent intent = getIntent();
-            myName = intent.getStringExtra(MY_NAME);
-            amPlayerOne = intent.getBooleanExtra(AM_PLAYER_ONE, false);
-            if (amPlayerOne) {
+            playerOneName = intent.getStringExtra(PLAYER_ONE_NAME);
+            isPlayerOne = intent.getBooleanExtra(PLAYER_ONE_STARTING, false);
+            if (isPlayerOne) {
+                isPlayerTwo = false;
                 getGameView().initialize(intent);
                 uploadGameState(Server.GamePostMode.CREATE);
                 waitForPlayerTwo();
-            }else{
+            } else {
+                playerTwoName = intent.getStringExtra(PLAYER_TWO_NAME);
+                getInitialGame();
                 waitForPlayerOne();
             }
         }
         updateUI();
     }
 
-    public void startHandler()
+    private void waitForPlayerOne() {
+        if (!startGame) {
+            progressDialog = ProgressDialog.show(GameActivity.this,
+                    getString(R.string.hold_horses),
+                    getString(R.string.waiting_for_p1), true, false);
+            startWaitForPlayerOneHandler();
+        }
+    }
+
+    private void waitForPlayerTwo() {
+        if (!startGame) {
+            progressDialog = ProgressDialog.show(GameActivity.this,
+                    getString(R.string.hold_horses),
+                    getString(R.string.waiting_for_p2), true, false);
+            startWaitForPlayerTwoHandler();
+        }
+    }
+
+    public void startWaitForPlayerOneHandler()
     {
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        waitForPlayerOneHandler = new Handler();
+        waitForPlayerOneHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                callAysncTask();
-                handler.postDelayed(this, 1000);
+                checkForPlayerTwoJoined();
+                waitForPlayerOneHandler.postDelayed(this, 1000);
             }
         }, 5000);  //the time is in miliseconds
     }
 
-    private void callAysncTask()
+    public void startWaitForPlayerTwoHandler()
     {
-        checkGameReady(myName);
+        waitForPlayerTwoHandler = new Handler();
+        waitForPlayerTwoHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkForPlayerTwoJoined();
+                waitForPlayerTwoHandler.postDelayed(this, 1000);
+            }
+        }, 5000);  //the time is in miliseconds
+    }
+
+    private void checkForPlayerTwoJoined()
+    {
+        checkGameReady(playerOneName);
     }
 
     private void checkGameReady(String usr) {
@@ -98,7 +132,6 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             protected Boolean doInBackground(String... params) {
-                Server server = new Server();
                 boolean success = server.gameReady(params[0]);
                 Log.i("success", "waiting");
                 return success;
@@ -108,7 +141,7 @@ public class GameActivity extends AppCompatActivity {
             protected void onPostExecute(Boolean success) {
                 if (success) {
                     Log.i("success", "joined");
-                    handler.removeCallbacksAndMessages(null);
+                    waitForPlayerTwoHandler.removeCallbacksAndMessages(null);
                     startGame();
                 }
             }
@@ -129,8 +162,8 @@ public class GameActivity extends AppCompatActivity {
     public void saveToXML(XmlSerializer xml) throws IOException {
         xml.startTag(null, "game");
 
-        String p1 = amPlayerOne ? myName : opponentName;
-        String p2 = amPlayerOne ? opponentName : myName;
+        String p1 = isPlayerOne ? playerOneName : playerTwoName;
+        String p2 = isPlayerOne ? playerTwoName : playerOneName;
         xml.attribute(null, "player1", p1);
         xml.attribute(null, "player2", p2);
 
@@ -163,23 +196,6 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void waitForPlayerOne() {
-        if (!startGame) {
-            progressDialog = ProgressDialog.show(GameActivity.this,
-                    getString(R.string.hold_horses),
-                    getString(R.string.waiting_for_p1), true, false);
-        }
-    }
-
-    private void waitForPlayerTwo() {
-        if (!startGame) {
-            progressDialog = ProgressDialog.show(GameActivity.this,
-                    getString(R.string.hold_horses),
-                    getString(R.string.waiting_for_p2), true, false);
-            startHandler();
-        }
-    }
-
     private void startGame() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
@@ -192,6 +208,10 @@ public class GameActivity extends AppCompatActivity {
         getGameView().startTurn();
         getGameView().invalidate();
         updateUI();
+    }
+
+    private void handleGameChanging(Intent intent) {
+
     }
 
     private void getInitialGame() {
@@ -267,37 +287,36 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
             }
-        }.execute(myName);
+        }.execute(playerOneName);
     }
 
+    /* Call this function once we know player one and player two name to start and set this players pipes*/
     private void initializeGame(String p1, String p2, GameView.dimension size) {
         if (!getGameView().isInitialized()) {
             getGameView().initialize(size);
         }
-        if (!amPlayerOne) {
-            opponentName = p1;
-            getGameView().setPlayerNames(myName, opponentName, Pipe.PipeGroup.PLAYER_TWO);
+        if (!isPlayerOne) {
+            playerTwoName = p1;
+            getGameView().setPlayerNames(playerOneName, playerTwoName, Pipe.PipeGroup.PLAYER_TWO);
         } else {
-            opponentName = p2;
+            playerTwoName = p2;
         }
-        //loadGameState();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-
-        bundle.putString(P_NAME, myName);
-        bundle.putString(O_NAME, opponentName);
-        bundle.putSerializable(AM_P1, amPlayerOne);
-
+        bundle.putString(P1_NAME, playerOneName);
+        bundle.putString(P2_NAME, playerTwoName);
+        bundle.putSerializable(IS_PLAYER_ONE, isPlayerOne);
+        bundle.putSerializable(IS_PLAYER_TWO, isPlayerTwo);
         getGameView().saveState(bundle);
     }
 
     private void loadGameState() {
         LoadTask load = new LoadTask();
         load.setGame(this);
-        load.execute(myName);
+        load.execute(playerOneName);
     }
 
     private void uploadGameState(Server.GamePostMode mode) {
@@ -306,10 +325,10 @@ public class GameActivity extends AppCompatActivity {
         update.setUploadMode(mode);
         switch (mode) {
             case UPDATE:
-                update.execute(myName, null);
+                update.execute(playerOneName, null);
                 break;
             case CREATE:
-                update.execute(myName, "");
+                update.execute(playerOneName, "");
                 break;
         }
     }
@@ -346,7 +365,7 @@ public class GameActivity extends AppCompatActivity {
                 server.quitGame(params[0]);
                 return null;
             }
-        }.execute(myName);
+        }.execute(playerOneName);
 
         Intent intent = new Intent(this, LoginUserActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -354,7 +373,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onSurrender(View view) {
-        onGameOver(opponentName);
+        onGameOver(playerTwoName);
     }
     public void onInstall(View view) {
         getGameView().installPipe();
@@ -374,9 +393,9 @@ public class GameActivity extends AppCompatActivity {
     }
     public void onOpenValve(View view) {
         if(getGameView().openValve()) {
-            onGameOver(myName);
+            onGameOver(playerOneName);
         } else {
-            onGameOver(opponentName);
+            onGameOver(playerTwoName);
         }
     }
 
@@ -401,8 +420,8 @@ public class GameActivity extends AppCompatActivity {
     //set the current active player
     private void updateUI(){
         TextView currentPlayer = (TextView)findViewById(R.id.currentPlayer);
-        String yourTurn = getString(R.string.your_turn) + '\n' + myName;
-        String waitingFor = getString(R.string.waiting_for) + '\n' + opponentName;
+        String yourTurn = getString(R.string.your_turn) + '\n' + playerOneName;
+        String waitingFor = getString(R.string.waiting_for) + '\n' + playerTwoName;
         Button discard = (Button) findViewById(R.id.discardButton);
         Button install = (Button) findViewById(R.id.installButton);
         Button surrender = (Button) findViewById(R.id.surrender);

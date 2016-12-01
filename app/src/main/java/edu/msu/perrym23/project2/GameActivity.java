@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
@@ -40,13 +39,11 @@ public class GameActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private boolean startGame = false;
 
-    private BroadcastReceiver gcmReceiver;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
 
         if(savedInstanceState != null) {
             myName = savedInstanceState.getString(P_NAME);
@@ -118,7 +115,6 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(gcmReceiver);
     }
 
     private void waitForPlayerTwo() {

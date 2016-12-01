@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
-import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -97,6 +97,8 @@ public class LoginUserActivity extends AppCompatActivity {
         createUserAlertDialog.show();
     }
 
+    public static final String BASE_URL = "https://steampunked-6e10c.firebaseio.com";
+
     @OnClick(R.id.login)
     public void onLoginClick(){
         if(isLoggedIn){
@@ -138,41 +140,6 @@ public class LoginUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_user);
         ButterKnife.bind(this);
-        registerGcm();
-    }
-
-    private void registerGcm() {
-        new AsyncTask<Context, Void, String>() {
-            private ProgressDialog progressDialog;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = ProgressDialog.show(LoginUserActivity.this,
-                        getString(R.string.please_wait),
-                        getString(R.string.logging_in),
-                        true, true, null);
-            }
-
-            @Override
-            protected String doInBackground(Context... params) {
-                String token = "";
-                try {
-                    InstanceID instanceID = InstanceID.getInstance(params[0]);
-                    token = instanceID.getToken(params[0].getString(R.string.gcm_defaultSenderId),
-                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                } catch (IOException ex) {
-
-                }
-
-                return token;
-            }
-
-            @Override
-            protected void onPostExecute(String gcmToken) {
-                progressDialog.dismiss();
-            }
-        }.execute(this);
     }
 
     public void newGame(View view) {

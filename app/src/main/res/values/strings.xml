@@ -102,5 +102,6 @@
     <string name="uploading">Uploading game...</string>
     <string name="upload_fail">Failed to upload game, trying again.</string>
     <string name="Logout">Logout</string>
+    <string name="waiting_for_other_player">Waiting for other player...</string>
 
 </resources>

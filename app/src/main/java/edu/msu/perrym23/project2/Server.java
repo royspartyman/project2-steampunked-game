@@ -35,6 +35,8 @@ public class Server {
     private static final String GAME_READY = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
     private static final String CHANGE_TURN = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
     private static final String GET_PLAYER_TWO = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayertwo.php";
+    private static final String GET_PLAYER_ONE = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayerone.php";
+    private static final String GET_CURRENT_PLAYER = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getcurrentplayer.php";
     private static final String UTF8 = "UTF-8";
 
     private boolean cancel = false;
@@ -73,6 +75,64 @@ public class Server {
         }
     }
 
+    public String getPlayerOne(String usr) {
+        String query = GET_PLAYER_ONE + "?username=" + usr;
+        String name = "";
+
+        try {
+            URL url = new URL(query);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if(responseCode != HttpURLConnection.HTTP_OK) {
+                return null;
+            }
+
+            InputStream stream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                name = line;
+            }
+            return name;
+
+        } catch (MalformedURLException e) {
+            // Should never happen
+            return "";
+        } catch (IOException ex) {
+            return "";
+        }
+    }
+
+    public String getCurrentPlayer(String usr) {
+        String query = GET_CURRENT_PLAYER + "?username=" + usr;
+        String playerTurn = "";
+
+        try {
+            URL url = new URL(query);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            int responseCode = conn.getResponseCode();
+            if(responseCode != HttpURLConnection.HTTP_OK) {
+                return null;
+            }
+
+            InputStream stream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                playerTurn = line;
+            }
+            return playerTurn;
+
+        } catch (MalformedURLException e) {
+            // Should never happen
+            return "";
+        } catch (IOException ex) {
+            return "";
+        }
+    }
+
     public void quitGame(String usr) {
         String query = QUIT_GAME + "?username=" + usr;
 
@@ -91,13 +151,16 @@ public class Server {
     }
 
     public boolean changeTurn(String usr) {
+
         String query = CHANGE_TURN + "?username=" + usr;
 
         InputStream stream = null;
         try {
             URL url = new URL(query);
 
-            if (cancel) { return false; }
+            if (cancel) {
+                return false;
+            }
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -105,7 +168,7 @@ public class Server {
             }
 
             stream = conn.getInputStream();
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -114,7 +177,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -122,6 +185,7 @@ public class Server {
                 }
             }
         }
+
         return true;
     }
 

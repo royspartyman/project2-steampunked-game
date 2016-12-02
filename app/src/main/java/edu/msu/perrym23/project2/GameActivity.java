@@ -2,6 +2,7 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,245 +25,64 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
-    public final static String PLAYER_ONE_NAME = "edu.msu.perrym23.project2.PLAYER_ONE_NAME";
-    public final static String PLAYER_TWO_NAME = "edu.msu.perrym23.project2.PLAYER_TWO_NAME";
-    public final static String PLAYER_ONE_STARTING = "edu.msu.perrym23.project2.PLAYER_ONE_STARTING";
+    public final static String MY_NAME = "edu.msu.becketta.steampunked.MY_NAME";
+    public final static String GCM_TOKEN = "edu.msu.becketta.steampunked.GCM_TOKEN";
+    public final static String AM_PLAYER_ONE = "edu.msu.becketta.steampunked.AM_PLAYER_ONE";
 
-    private final static String MY_NAME = "my_name";
-    private final static String P1_NAME = "p1_name";
-    private final static String P2_NAME = "p2_name";
-    private final static String IS_PLAYER_ONE = "is_player_one";
-    private final static String IS_PLAYER_TWO = "is_player_two";
+    private final static String P_NAME = "my_name";
+    private final static String TOKEN = "token";
+    private final static String O_NAME = "opponent_name";
+    private final static String AM_P1 = "am_player_one";
 
-    private boolean joined = false;
     private String myName = "";
-    private String otherName = "";
-
-
-    Server server = new Server();
-    private Handler waitForPlayerTwoHandler;
-    private Handler waitForTurnHandler;
-
-    private String playerOneName = "";
-    private String playerTwoName = "";
-    private boolean isPlayerOne;
-    private boolean isPlayerTwo;
+    private String token;
+    private String opponentName = "";
+    private boolean amPlayerOne;
 
     private ProgressDialog progressDialog;
     private boolean startGame = false;
+    Server server = new Server();
+    private boolean uploadComplete = false;
+
+    TimerTask waitForP2Timer;
+    TimerTask waitForUploadGame;
+    TimerTask waitForMyTurn;
+    TimerTask waitForChangeTurn;
+
+    private boolean isFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
         if (savedInstanceState != null) {
-            myName = savedInstanceState.getString(MY_NAME);
-            playerOneName = savedInstanceState.getString(P1_NAME);
-            playerTwoName = savedInstanceState.getString(P2_NAME);
-            isPlayerOne = savedInstanceState.getBoolean(IS_PLAYER_ONE);
-            isPlayerTwo = savedInstanceState.getBoolean(IS_PLAYER_TWO);
+            myName = savedInstanceState.getString(P_NAME);
+            token = savedInstanceState.getString(TOKEN);
+            opponentName = savedInstanceState.getString(O_NAME);
+            amPlayerOne = savedInstanceState.getBoolean(AM_P1);
+
             getGameView().loadState(savedInstanceState);
         } else { // There is no saved state, use the intent for initialization
             Intent intent = getIntent();
-            isPlayerOne = intent.getBooleanExtra(PLAYER_ONE_STARTING, false);
-            if (isPlayerOne) {
-                playerOneName = intent.getStringExtra(PLAYER_ONE_NAME);
-                myName = playerOneName;
-                isPlayerTwo = false;
+            myName = intent.getStringExtra(MY_NAME);
+            token = intent.getStringExtra(GCM_TOKEN);
+            amPlayerOne = intent.getBooleanExtra(AM_PLAYER_ONE, false);
+
+            if (amPlayerOne) {
                 getGameView().initialize(intent);
                 uploadGameState(Server.GamePostMode.CREATE);
-                waitForPlayerTwo();
+                setWaitForPlayerTwo();
             } else {
-                isPlayerTwo = true;
-                isPlayerOne = false;
-                playerTwoName = intent.getStringExtra(PLAYER_TWO_NAME);
-                myName = playerTwoName;
-                getPlayerOne(myName);
+                getInitialGame();
             }
         }
         updateUI();
-    }
-
-    private void waitForPlayerTwo() {
-        if (!startGame) {
-            progressDialog = ProgressDialog.show(GameActivity.this,
-                    getString(R.string.hold_horses),
-                    getString(R.string.waiting_for_p2), true, false);
-            startWaitForPlayerTwoHandler();
-        }
-    }
-
-    private void waitForTurn() {
-        progressDialog = ProgressDialog.show(GameActivity.this,
-                getString(R.string.hold_horses),
-                getString(R.string.waiting_for_other_player), true, false);
-        startWaitForTurn();
-    }
-
-    public void startWaitForPlayerTwoHandler() {
-        waitForPlayerTwoHandler = new Handler();
-        waitForPlayerTwoHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkForPlayerTwoJoined();
-                waitForPlayerTwoHandler.postDelayed(this, 1000);
-            }
-        }, 5000);  //the time is in miliseconds
-    }
-
-    public void startWaitForTurn() {
-        waitForTurnHandler = new Handler();
-        waitForTurnHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkForMyTurn();
-                waitForTurnHandler.postDelayed(this, 1000);
-            }
-        }, 5000);  //the time is in miliseconds
-    }
-
-    private void checkForPlayerTwoJoined() {
-        checkGameReady(myName);
-    }
-
-    private void checkForMyTurn() {
-        checkTurn(myName);
-    }
-
-    private void checkTurn(final String usr) {
-        new AsyncTask<String, Void, String>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                String player = server.getCurrentPlayer(params[0]);
-                Log.i("playerTurn", player);
-                return player;
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            protected void onPostExecute(String player) {
-                if (Objects.equals(player, myName)) {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                    loadGameState();
-                    waitForTurnHandler.removeCallbacksAndMessages(null);
-                }
-
-            }
-        }.execute(usr);
-    }
-
-
-
-    private void checkGameReady(final String usr) {
-
-        new AsyncTask<String, Void, Boolean>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected Boolean doInBackground(String... params) {
-                boolean success = server.gameReady(params[0]);
-                Log.i("success", "waiting");
-                return success;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean success) {
-                if (success) {
-                    Log.i("success", "joined");
-                    joined = true;
-                    joinedSuccess();
-                    waitForPlayerTwoHandler.removeCallbacksAndMessages(null);
-                }
-            }
-        }.execute(usr);
-    }
-
-    private void joinedSuccess() {
-        getPlayerTwo(playerOneName);
-    }
-
-    private void getPlayerTwo(final String usr) {
-        new AsyncTask<String, String, String>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                String name = server.getPlayerTwo(params[0]);
-                Log.i("player two", name);
-                return name;
-            }
-
-            @Override
-            protected void onPostExecute(String name) {
-                playerTwoName = name;
-                getGameView().setPlayerNames(myName, otherName, Pipe.PipeGroup.PLAYER_ONE);
-                startGame();
-            }
-        }.execute(usr);
-    }
-
-    private void getPlayerOne(final String usr) {
-        new AsyncTask<String, String, String>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                String name = server.getPlayerOne(params[0]);
-                return name;
-            }
-
-            @Override
-            protected void onPostExecute(String name) {
-                playerOneName = name;
-                getInitialGame();
-            }
-        }.execute(usr);
-    }
-
-    private void changeTurn(final String usr) {
-
-        new AsyncTask<String, Void, Boolean>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected Boolean doInBackground(String... params) {
-                boolean success = server.changeTurn(params[0]);
-                return success;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean success) {
-                uploadGameState(Server.GamePostMode.UPDATE);
-                waitForTurn();
-            }
-        }.execute(usr);
     }
 
     public void loadFromXML(XmlPullParser xml, String obj) throws IOException, XmlPullParserException {
@@ -279,8 +99,8 @@ public class GameActivity extends AppCompatActivity {
     public void saveToXML(XmlSerializer xml) throws IOException {
         xml.startTag(null, "game");
 
-        String p1 = isPlayerOne ? myName : otherName;
-        String p2 = isPlayerOne ? otherName : myName;
+        String p1 = amPlayerOne ? myName : opponentName;
+        String p2 = amPlayerOne ? opponentName : myName;
         xml.attribute(null, "player1", p1);
         xml.attribute(null, "player2", p2);
 
@@ -313,6 +133,159 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void setWaitForPlayerTwo() {
+        if (!startGame) {
+            progressDialog = ProgressDialog.show(GameActivity.this,
+                    getString(R.string.hold_horses),
+                    getString(R.string.waiting_for_p2), true, false);
+            final Handler handler = new Handler();
+            Timer timer = new Timer();
+            waitForP2Timer = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try {
+                                checkGameReady(myName);
+                            } catch (Exception e) {
+                                // TODO Auto-generated catch block
+                            }
+                        }
+                    });
+                }
+            };
+            timer.schedule(waitForP2Timer, 0, 5000); //execute in every 50000 ms
+        }
+    }
+
+    public void switchTurns(){
+        changeTurn(opponentName);
+    }
+
+    public void setWaitForMyTurn() {
+        progressDialog = ProgressDialog.show(GameActivity.this,
+                getString(R.string.hold_horses),
+                getString(R.string.waiting_for_other_player), true, false);
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        waitForMyTurn = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                                checkTurn(myName);
+                                Log.i("check turn", "checking");
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(waitForMyTurn, 0, 3000); //execute in every 50000 ms
+    }
+
+    private void changeTurn(final String usr) {
+
+        new AsyncTask<String, Void, Boolean>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+                boolean success = server.changeTurn(params[0]);
+                Log.i("Turn change", "changing the turn");
+                return success;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                setWaitForMyTurn();
+            }
+        }.execute(usr);
+    }
+
+    private void checkTurn(final String usr) {
+        new AsyncTask<String, Void, String>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String player = server.getCurrentPlayer(params[0]);
+                Log.i("player turn check", "checking");
+                return player;
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            protected void onPostExecute(String player) {
+                if(Objects.equals(player, myName)){
+                    loadGameState();
+                    startGame();
+                    waitForMyTurn.cancel();
+                }
+            }
+        }.execute(usr);
+    }
+
+    private void checkGameReady(final String usr) {
+
+        new AsyncTask<String, Void, Boolean>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+                boolean success = server.gameReady(params[0]);
+                return success;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+                    Log.i("success", "joined");
+                    getPlayerTwo(myName);
+                    waitForP2Timer.cancel();
+                }
+            }
+        }.execute(usr);
+    }
+
+    private void getPlayerTwo(final String usr) {
+        new AsyncTask<String, String, String>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String name = server.getPlayerTwo(params[0]);
+                Log.i("player two", name);
+                return name;
+            }
+
+            @Override
+            protected void onPostExecute(String name) {
+                opponentName = name;
+                getGameView().setPlayerNames(myName, opponentName, Pipe.PipeGroup.PLAYER_ONE);
+                startGame();
+            }
+        }.execute(usr);
+    }
+
     private void startGame() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
@@ -327,10 +300,10 @@ public class GameActivity extends AppCompatActivity {
         updateUI();
     }
 
-
     private void getInitialGame() {
         new AsyncTask<String, Void, Boolean>() {
 
+            private ProgressDialog progressDialog;
             private Server server = new Server();
             private volatile boolean cancel = false;
             private volatile String p1;
@@ -340,6 +313,14 @@ public class GameActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                progressDialog = ProgressDialog.show(GameActivity.this,
+                        getString(R.string.initializing),
+                        null, true, true, new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                cancel = true;
+                            }
+                        });
             }
 
             @Override
@@ -377,6 +358,7 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean success) {
+                progressDialog.dismiss();
                 if (success) {
                     GameView.dimension size = GameView.dimension.SMALL;
                     switch (dim) {
@@ -391,9 +373,9 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             size = null;
                     }
+                    setWaitForMyTurn();
                     if (size != null && p1 != null && p2 != null) {
                         initializeGame(p1, p2, size);
-                        waitForTurn();
                     } else {
                         Toast.makeText(GameActivity.this,
                                 R.string.init_fail,
@@ -405,27 +387,25 @@ public class GameActivity extends AppCompatActivity {
         }.execute(myName);
     }
 
-    /* Call this function once we know player one and player two name to start and set this players pipes*/
     private void initializeGame(String p1, String p2, GameView.dimension size) {
         if (!getGameView().isInitialized()) {
             getGameView().initialize(size);
         }
-        if (!isPlayerOne) {
-            otherName = p1;
-            getGameView().setPlayerNames(myName, otherName, Pipe.PipeGroup.PLAYER_TWO);
+        if (!amPlayerOne) {
+            opponentName = p1;
+            getGameView().setPlayerNames(myName, opponentName, Pipe.PipeGroup.PLAYER_TWO);
         } else {
-            otherName = p2;
+            opponentName = p2;
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        bundle.putString(MY_NAME, myName);
-        bundle.putString(P1_NAME, playerOneName);
-        bundle.putString(P2_NAME, playerTwoName);
-        bundle.putSerializable(IS_PLAYER_ONE, isPlayerOne);
-        bundle.putSerializable(IS_PLAYER_TWO, isPlayerTwo);
+        bundle.putString(P_NAME, myName);
+        bundle.putString(TOKEN, token);
+        bundle.putString(O_NAME, opponentName);
+        bundle.putSerializable(AM_P1, amPlayerOne);
         getGameView().saveState(bundle);
     }
 
@@ -444,13 +424,19 @@ public class GameActivity extends AppCompatActivity {
                 update.execute(myName, null);
                 break;
             case CREATE:
-                update.execute(myName, "");
+                update.execute(myName, token);
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
+        /*
+         * Ask if the user is sure they want to quit the current game.
+         *
+         * If they do then call super.onBackPressed().
+         * If they don't then do nothing.
+         */
         AlertDialog.Builder builder = new AlertDialog.Builder(getGameView().getContext());
         builder.setTitle(R.string.quit_game);
         builder.setMessage(R.string.quit_game_confirmation);
@@ -483,7 +469,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onSurrender(View view) {
-        onGameOver(otherName);
+        onGameOver(opponentName);
     }
 
     public void onInstall(View view) {
@@ -491,7 +477,7 @@ public class GameActivity extends AppCompatActivity {
         updateUI();
 
         if (!getGameView().isMyTurn()) {
-            changeTurn(myName);
+            uploadGameState(Server.GamePostMode.UPDATE);
         }
     }
 
@@ -500,7 +486,7 @@ public class GameActivity extends AppCompatActivity {
         updateUI();
 
         if (!getGameView().isMyTurn()) {
-            changeTurn(myName);
+            uploadGameState(Server.GamePostMode.UPDATE);
         }
     }
 
@@ -508,7 +494,7 @@ public class GameActivity extends AppCompatActivity {
         if (getGameView().openValve()) {
             onGameOver(myName);
         } else {
-            onGameOver(otherName);
+            onGameOver(opponentName);
         }
     }
 
@@ -534,7 +520,7 @@ public class GameActivity extends AppCompatActivity {
     private void updateUI() {
         TextView currentPlayer = (TextView) findViewById(R.id.currentPlayer);
         String yourTurn = getString(R.string.your_turn) + '\n' + myName;
-        String waitingFor = getString(R.string.waiting_for) + '\n' + otherName;
+        String waitingFor = getString(R.string.waiting_for) + '\n' + opponentName;
         Button discard = (Button) findViewById(R.id.discardButton);
         Button install = (Button) findViewById(R.id.installButton);
         Button surrender = (Button) findViewById(R.id.surrender);
@@ -554,6 +540,7 @@ public class GameActivity extends AppCompatActivity {
             openValve.setEnabled(false);
         }
     }
+
 
     private class UploadTask extends AsyncTask<String, Void, Boolean> {
 
@@ -578,6 +565,7 @@ public class GameActivity extends AppCompatActivity {
         public void setGame(GameActivity act) {
             this.game = act;
         }
+
         public void setUploadMode(Server.GamePostMode mode) {
             uploadMode = mode;
         }
@@ -596,6 +584,14 @@ public class GameActivity extends AppCompatActivity {
                         R.string.upload_fail,
                         Toast.LENGTH_LONG).show();
                 uploadGameState(uploadMode);
+            } else {
+                if(isFirstTime){
+                    Log.i("UPLOAD GAME", "COMPLETE FIRST TIME");
+                    isFirstTime = false;
+                }else{
+                    Log.i("UPLOAD GAME", "COMPLETE: SWITCHING TURNS");
+                    switchTurns();
+                }
             }
         }
     }
@@ -630,7 +626,7 @@ public class GameActivity extends AppCompatActivity {
             InputStream stream = server.getGameState(params[0]);
             boolean success = stream != null;
             boolean gOver = false;
-            if(success) {
+            if (success) {
                 try {
                     if (cancel) {
                         return 1;
@@ -642,12 +638,12 @@ public class GameActivity extends AppCompatActivity {
                     xml.nextTag();      // Advance to first tag
                     xml.require(XmlPullParser.START_TAG, null, "game");
                     String gameOver = xml.getAttributeValue(null, "gameover");
-                    if(gameOver.equals("false")) {
-                        while(xml.nextTag() == XmlPullParser.START_TAG) {
+                    if (gameOver.equals("false")) {
+                        while (xml.nextTag() == XmlPullParser.START_TAG) {
                             if (cancel) {
                                 return 1;
                             }
-                            if(xml.getName().equals("field")) {
+                            if (xml.getName().equals("field")) {
                                 game.loadFromXML(xml, "field");
                             } else if (xml.getName().equals("bank")) {
                                 game.loadFromXML(xml, "bank");
@@ -658,14 +654,14 @@ public class GameActivity extends AppCompatActivity {
                         winner = xml.getAttributeValue(null, "winner");
                     }
 
-                } catch(IOException ex) {
+                } catch (IOException ex) {
                     success = false;
-                } catch(XmlPullParserException ex) {
+                } catch (XmlPullParserException ex) {
                     success = false;
                 } finally {
                     try {
                         stream.close();
-                    } catch(IOException ex) {
+                    } catch (IOException ex) {
                     }
                 }
             }

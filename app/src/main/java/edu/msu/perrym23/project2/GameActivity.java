@@ -39,10 +39,10 @@ public class GameActivity extends AppCompatActivity {
 
     private boolean joined = false;
     private String myName = "";
+    private String otherName = "";
 
 
     Server server = new Server();
-
     private Handler waitForPlayerTwoHandler;
     private Handler waitForTurnHandler;
 
@@ -81,8 +81,6 @@ public class GameActivity extends AppCompatActivity {
                 playerTwoName = intent.getStringExtra(PLAYER_TWO_NAME);
                 myName = playerTwoName;
                 getPlayerOne(myName);
-                getInitialGame();
-                waitForTurn();
             }
         }
         updateUI();
@@ -127,7 +125,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void checkForPlayerTwoJoined() {
-        checkGameReady(playerOneName);
+        checkGameReady(myName);
     }
 
     private void checkForMyTurn() {
@@ -157,13 +155,14 @@ public class GameActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                     loadGameState();
-                    startTurn();
                     waitForTurnHandler.removeCallbacksAndMessages(null);
                 }
 
             }
         }.execute(usr);
     }
+
+
 
     private void checkGameReady(final String usr) {
 
@@ -215,7 +214,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String name) {
                 playerTwoName = name;
-                getGameView().setPlayerNames(playerOneName, playerTwoName, Pipe.PipeGroup.PLAYER_ONE);
+                getGameView().setPlayerNames(myName, otherName, Pipe.PipeGroup.PLAYER_ONE);
                 startGame();
             }
         }.execute(usr);
@@ -238,6 +237,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String name) {
                 playerOneName = name;
+                getInitialGame();
             }
         }.execute(usr);
     }
@@ -279,8 +279,8 @@ public class GameActivity extends AppCompatActivity {
     public void saveToXML(XmlSerializer xml) throws IOException {
         xml.startTag(null, "game");
 
-        String p1 = isPlayerOne ? myName : playerTwoName;
-        String p2 = isPlayerOne ? playerTwoName : myName;
+        String p1 = isPlayerOne ? myName : otherName;
+        String p2 = isPlayerOne ? otherName : myName;
         xml.attribute(null, "player1", p1);
         xml.attribute(null, "player2", p2);
 
@@ -393,6 +393,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                     if (size != null && p1 != null && p2 != null) {
                         initializeGame(p1, p2, size);
+                        waitForTurn();
                     } else {
                         Toast.makeText(GameActivity.this,
                                 R.string.init_fail,
@@ -410,10 +411,10 @@ public class GameActivity extends AppCompatActivity {
             getGameView().initialize(size);
         }
         if (!isPlayerOne) {
-            playerTwoName = p1;
-            getGameView().setPlayerNames(myName, playerTwoName, Pipe.PipeGroup.PLAYER_TWO);
+            otherName = p1;
+            getGameView().setPlayerNames(myName, otherName, Pipe.PipeGroup.PLAYER_TWO);
         } else {
-            playerTwoName = p2;
+            otherName = p2;
         }
     }
 
@@ -482,11 +483,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onSurrender(View view) {
-        if (isPlayerOne) {
-            onGameOver(myName);
-        } else {
-            onGameOver(playerTwoName);
-        }
+        onGameOver(otherName);
     }
 
     public void onInstall(View view) {
@@ -503,7 +500,7 @@ public class GameActivity extends AppCompatActivity {
         updateUI();
 
         if (!getGameView().isMyTurn()) {
-            uploadGameState(Server.GamePostMode.UPDATE);
+            changeTurn(myName);
         }
     }
 
@@ -511,11 +508,7 @@ public class GameActivity extends AppCompatActivity {
         if (getGameView().openValve()) {
             onGameOver(myName);
         } else {
-            if (isPlayerOne) {
-                onGameOver(playerOneName);
-            } else {
-                onGameOver(playerTwoName);
-            }
+            onGameOver(otherName);
         }
     }
 
@@ -539,15 +532,9 @@ public class GameActivity extends AppCompatActivity {
 
     //set the current active player
     private void updateUI() {
-        String waitingFor = "";
-
         TextView currentPlayer = (TextView) findViewById(R.id.currentPlayer);
         String yourTurn = getString(R.string.your_turn) + '\n' + myName;
-        if (isPlayerOne) {
-            waitingFor = getString(R.string.waiting_for) + '\n' + playerTwoName;
-        } else {
-            waitingFor = getString(R.string.waiting_for) + '\n' + playerOneName;
-        }
+        String waitingFor = getString(R.string.waiting_for) + '\n' + otherName;
         Button discard = (Button) findViewById(R.id.discardButton);
         Button install = (Button) findViewById(R.id.installButton);
         Button surrender = (Button) findViewById(R.id.surrender);
@@ -568,9 +555,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
     private class UploadTask extends AsyncTask<String, Void, Boolean> {
 
+        private ProgressDialog progressDialog;
         private Server server = new Server();
         private GameActivity game;
         private Server.GamePostMode uploadMode;
@@ -578,12 +565,19 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = ProgressDialog.show(GameActivity.this,
+                    getString(R.string.uploading),
+                    null, true, true, new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            server.cancel();
+                        }
+                    });
         }
 
         public void setGame(GameActivity act) {
             this.game = act;
         }
-
         public void setUploadMode(Server.GamePostMode mode) {
             uploadMode = mode;
         }
@@ -596,6 +590,7 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean success) {
+            progressDialog.dismiss();
             if (!success) {
                 Toast.makeText(GameActivity.this,
                         R.string.upload_fail,
@@ -635,7 +630,7 @@ public class GameActivity extends AppCompatActivity {
             InputStream stream = server.getGameState(params[0]);
             boolean success = stream != null;
             boolean gOver = false;
-            if (success) {
+            if(success) {
                 try {
                     if (cancel) {
                         return 1;
@@ -647,12 +642,12 @@ public class GameActivity extends AppCompatActivity {
                     xml.nextTag();      // Advance to first tag
                     xml.require(XmlPullParser.START_TAG, null, "game");
                     String gameOver = xml.getAttributeValue(null, "gameover");
-                    if (gameOver.equals("false")) {
-                        while (xml.nextTag() == XmlPullParser.START_TAG) {
+                    if(gameOver.equals("false")) {
+                        while(xml.nextTag() == XmlPullParser.START_TAG) {
                             if (cancel) {
                                 return 1;
                             }
-                            if (xml.getName().equals("field")) {
+                            if(xml.getName().equals("field")) {
                                 game.loadFromXML(xml, "field");
                             } else if (xml.getName().equals("bank")) {
                                 game.loadFromXML(xml, "bank");
@@ -663,14 +658,14 @@ public class GameActivity extends AppCompatActivity {
                         winner = xml.getAttributeValue(null, "winner");
                     }
 
-                } catch (IOException ex) {
+                } catch(IOException ex) {
                     success = false;
-                } catch (XmlPullParserException ex) {
+                } catch(XmlPullParserException ex) {
                     success = false;
                 } finally {
                     try {
                         stream.close();
-                    } catch (IOException ex) {
+                    } catch(IOException ex) {
                     }
                 }
             }

@@ -31,7 +31,6 @@ import java.util.TimerTask;
 public class GameActivity extends AppCompatActivity {
 
     public final static String MY_NAME = "edu.msu.becketta.steampunked.MY_NAME";
-    public final static String GCM_TOKEN = "edu.msu.becketta.steampunked.GCM_TOKEN";
     public final static String AM_PLAYER_ONE = "edu.msu.becketta.steampunked.AM_PLAYER_ONE";
 
     private final static String P_NAME = "my_name";
@@ -40,19 +39,15 @@ public class GameActivity extends AppCompatActivity {
     private final static String AM_P1 = "am_player_one";
 
     private String myName = "";
-    private String token;
     private String opponentName = "";
     private boolean amPlayerOne;
 
     private ProgressDialog progressDialog;
     private boolean startGame = false;
     Server server = new Server();
-    private boolean uploadComplete = false;
 
     TimerTask waitForP2Timer;
-    TimerTask waitForUploadGame;
     TimerTask waitForMyTurn;
-    TimerTask waitForChangeTurn;
 
     private boolean isFirstTime = true;
 
@@ -63,7 +58,6 @@ public class GameActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             myName = savedInstanceState.getString(P_NAME);
-            token = savedInstanceState.getString(TOKEN);
             opponentName = savedInstanceState.getString(O_NAME);
             amPlayerOne = savedInstanceState.getBoolean(AM_P1);
 
@@ -71,7 +65,6 @@ public class GameActivity extends AppCompatActivity {
         } else { // There is no saved state, use the intent for initialization
             Intent intent = getIntent();
             myName = intent.getStringExtra(MY_NAME);
-            token = intent.getStringExtra(GCM_TOKEN);
             amPlayerOne = intent.getBooleanExtra(AM_PLAYER_ONE, false);
 
             if (amPlayerOne) {
@@ -80,6 +73,7 @@ public class GameActivity extends AppCompatActivity {
                 setWaitForPlayerTwo();
             } else {
                 getInitialGame();
+                isFirstTime = false;
             }
         }
         updateUI();
@@ -89,9 +83,6 @@ public class GameActivity extends AppCompatActivity {
         switch (obj) {
             case "field":
                 getGameView().loadFieldFromXml(xml);
-                break;
-            case "bank":
-                getGameView().loadBankFromXml(xml);
                 break;
         }
     }
@@ -403,7 +394,6 @@ public class GameActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putString(P_NAME, myName);
-        bundle.putString(TOKEN, token);
         bundle.putString(O_NAME, opponentName);
         bundle.putSerializable(AM_P1, amPlayerOne);
         getGameView().saveState(bundle);
@@ -421,10 +411,10 @@ public class GameActivity extends AppCompatActivity {
         update.setUploadMode(mode);
         switch (mode) {
             case UPDATE:
-                update.execute(myName, null);
+                update.execute(myName);
                 break;
             case CREATE:
-                update.execute(myName, token);
+                update.execute(myName);
                 break;
         }
     }
@@ -504,11 +494,8 @@ public class GameActivity extends AppCompatActivity {
     public void onGameOver(String winner) {
         getGameView().setGameOver(winner);
         uploadGameState(Server.GamePostMode.UPDATE);
-
         Intent intent = new Intent(this, EndGameActivity.class);
-
         intent.putExtra(EndGameActivity.WINNER, winner);
-
         startActivity(intent);
     }
 
@@ -645,8 +632,6 @@ public class GameActivity extends AppCompatActivity {
                             }
                             if (xml.getName().equals("field")) {
                                 game.loadFromXML(xml, "field");
-                            } else if (xml.getName().equals("bank")) {
-                                game.loadFromXML(xml, "bank");
                             }
                         }
                     } else {

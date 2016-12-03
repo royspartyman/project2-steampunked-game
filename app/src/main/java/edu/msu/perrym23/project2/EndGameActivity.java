@@ -21,15 +21,15 @@ public class EndGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
 
-        if(savedInstanceState != null) {
-            winnerElement = (TextView)findViewById(R.id.winnerTag);
+        if (savedInstanceState != null) {
+            winnerElement = (TextView) findViewById(R.id.winnerTag);
             winner = savedInstanceState.getString(WINNER);
 
             winnerElement.setText(winner);
         } else {
             Intent intent = getIntent();
             winner = intent.getStringExtra(WINNER);
-            winnerElement = (TextView)findViewById(R.id.winnerTag);
+            winnerElement = (TextView) findViewById(R.id.winnerTag);
             winnerElement.setText(winner);
         }
     }
@@ -41,12 +41,14 @@ public class EndGameActivity extends AppCompatActivity {
         bundle.putString(WINNER, winner);
 
     }
-    public void onNewGame(View view){
+
+    public void onNewGame(View view) {
         Intent intent = new Intent(this, LoginUserActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
     @Override
-    public void onBackPressed(){}
+    public void onBackPressed() {
+    }
 }

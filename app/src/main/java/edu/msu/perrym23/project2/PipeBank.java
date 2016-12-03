@@ -6,18 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
-
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
 class PipeBank implements Serializable {
 
     public final int bankSize = 5;
-
 
     private final PipeProbability[] relativePipeProbs = {
             new PipeProbability(Pipe.pipeType.STRAIGHT, 1),
@@ -48,72 +42,35 @@ class PipeBank implements Serializable {
         bankPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bankPaint.setColor(Color.argb(90, 0, 100, 0));
 
-        for(int i = 0; i < bankSize; i++) {
+        for (int i = 0; i < bankSize; i++) {
             if (pipes[i] == null) {
                 pipes[i] = getRandomPipe();
             }
         }
     }
 
-    public void loadFromSavedState(XmlPullParser xml, GameView view) throws IOException, XmlPullParserException {
-
-        final Pipe[] newPipes = new Pipe[bankSize];
-
-        int count = 0;
-
-        while (count < bankSize && xml.nextTag() == XmlPullParser.START_TAG) {
-            if (xml.getName().equals("pipe")) {
-                newPipes[count] = Pipe.bankPipeFromXml(xml, view.getContext());
-                ++count;
-            }
-            Server.skipToEndTag(xml);
-        }
-
-        view.post(new Runnable() {
-
-            @Override
-            public void run() {
-                pipes = newPipes;
-            }
-        });
-    }
-
-    public void saveToXML(XmlSerializer xml) throws IOException {
-        xml.startTag(null, "bank");
-
-        for (Pipe p : pipes) {
-            p.bankPipeToXml(xml);
-        }
-
-        xml.endTag(null, "bank");
-    }
-
     private Pipe getRandomPipe() {
         int probTotal = 0;
 
-        for(PipeProbability pair : relativePipeProbs) {
+        for (PipeProbability pair : relativePipeProbs) {
             probTotal += pair.relativeProb;
         }
 
         int index = random.nextInt(probTotal);
         int sum = 0;
-        int i=0;
+        int i = 0;
 
-        while(sum <= index ) {
+        while (sum <= index) {
             sum = sum + relativePipeProbs[i++].relativeProb;
         }
 
-        return new Pipe(context, relativePipeProbs[i-1].type);
-    }
-
-    public Pipe getActivePipe() {
-        return activePipe;
+        return new Pipe(context, relativePipeProbs[i - 1].type);
     }
 
     public void setActivePipe(Pipe active) {
-        if(active == null) {
-            for(int i = 0; i < pipes.length; i++) {
-                if(pipes[i] == activePipe) {
+        if (active == null) {
+            for (int i = 0; i < pipes.length; i++) {
+                if (pipes[i] == activePipe) {
                     pipes[i] = null;
                     pipes[i] = getRandomPipe();
                 }
@@ -127,12 +84,12 @@ class PipeBank implements Serializable {
         activePipe = null;
 
         float pos = xpos;
-        if(!horizontal) {
+        if (!horizontal) {
             pos = ypos;
         }
 
-        int section = (int)(pos / (spacing + pipeDim));
-        if((section < bankSize) && (pos % (spacing + pipeDim) > spacing)) {
+        int section = (int) (pos / (spacing + pipeDim));
+        if ((section < bankSize) && (pos % (spacing + pipeDim) > spacing)) {
             Log.i("Hit Pipe", "You hit pipe " + section + " in the pipe bank.");
             return pipes[section];
         }
@@ -146,7 +103,7 @@ class PipeBank implements Serializable {
 
         float spacingX, spacingY, scale;
 
-        if(width >= height) {
+        if (width >= height) {
             horizontal = true;
             pipeDim = width / (bankSize + 2);
             spacing = spacingX = 2 * pipeDim / (bankSize + 1);
@@ -154,16 +111,16 @@ class PipeBank implements Serializable {
             scale = pipeDim < height ? pipeDim / blockSize : height / blockSize;
             spacingY = height / 2;
 
-            for(int i = 0; i < bankSize; i++) {
-                if((pipes[i] == null)) {
+            for (int i = 0; i < bankSize; i++) {
+                if ((pipes[i] == null)) {
                     pipes[i] = getRandomPipe();
                 }
 
                 canvas.save();
-                canvas.translate((pipeDim/2)*i + spacingX*(i+1) , spacingY);
+                canvas.translate((pipeDim / 2) * i + spacingX * (i + 1), spacingY);
                 canvas.scale(scale, scale);
 
-                if(pipes[i] != activePipe) {
+                if (pipes[i] != activePipe) {
                     pipes[i].resetPipe();
                     pipes[i].draw(canvas);
                 }
@@ -178,15 +135,15 @@ class PipeBank implements Serializable {
             scale = pipeDim < width ? pipeDim / blockSize : height / blockSize;
             spacingX = width / 2;
 
-            for(int i = 0; i < bankSize; i++) {
-                if(pipes[i] == null) {
+            for (int i = 0; i < bankSize; i++) {
+                if (pipes[i] == null) {
                     pipes[i] = getRandomPipe();
                 }
 
                 canvas.save();
-                canvas.translate(spacingX, (pipeDim/2)*i + spacingY*(i+1));
+                canvas.translate(spacingX, (pipeDim / 2) * i + spacingY * (i + 1));
                 canvas.scale(scale, scale);
-                if(pipes[i] != activePipe) {
+                if (pipes[i] != activePipe) {
                     pipes[i].setLocation(0, 0);
                     pipes[i].draw(canvas);
                 }
@@ -199,6 +156,7 @@ class PipeBank implements Serializable {
     private static class PipeProbability implements Serializable {
         public Pipe.pipeType type;
         public int relativeProb;
+
         public PipeProbability(Pipe.pipeType typ, int prob) {
             type = typ;
             relativeProb = prob;

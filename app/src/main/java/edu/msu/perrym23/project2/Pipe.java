@@ -15,9 +15,6 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * A representation of a pipe
- */
 public class Pipe implements Serializable {
 
     public enum pipeType {

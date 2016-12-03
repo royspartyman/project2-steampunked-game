@@ -37,19 +37,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        final RotateAnimation rotate = new RotateAnimation(30, 360, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
+        final RotateAnimation rotate = new RotateAnimation(30, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(3000);
 
 
-        Thread timerThread = new Thread(){
-            public void run(){
-                try{
+        Thread timerThread = new Thread() {
+            public void run() {
+                try {
                     punpkinOneIV.startAnimation(rotate);
                     punpkinTwoIV.startAnimation(rotate);
                     sleep(3000);
-                }catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }finally{
+                } finally {
                     Intent intent = new Intent(SplashScreenActivity.this, LoginUserActivity.class);
                     startActivity(intent);
                 }
@@ -64,5 +64,5 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onPause();
         finish();
     }
-    
+
 }

@@ -22,23 +22,11 @@ public class GameView extends View {
     public final static String PLAYING_AREA = "playingArea";
     public final static String PIPE_BANK = "pipeBank";
     public final static String PARAMETERS = "parameters";
-
-    public enum dimension {
-        SMALL,
-        MEDIUM,
-        LARGE
-    }
-
     private final static float bankLocation = 0.8f;
-
     private PlayingArea gameField = null;
-
     private PipeBank bank = null;
-
     private Parameters params = null;
-
     private Touch touch1 = new Touch();
-
     private Touch touch2 = new Touch();
 
     public GameView(Context context) {
@@ -66,7 +54,7 @@ public class GameView extends View {
     }
 
     public void initialize(Intent intent) {
-        params.boardSize = (dimension)intent.getSerializableExtra(BOARD_SIZE);
+        params.boardSize = (dimension) intent.getSerializableExtra(BOARD_SIZE);
         initializeGameArea(params.boardSize);
     }
 
@@ -85,36 +73,22 @@ public class GameView extends View {
         });
     }
 
-    public void loadBankFromXml(XmlPullParser xml) throws IOException, XmlPullParserException {
-        bank.loadFromSavedState(xml, this);
-        post(new Runnable() {
-            @Override
-            public void run() {
-                invalidate();
-            }
-        });
-    }
-
     public void saveToXML(XmlSerializer xml) throws IOException {
         gameField.saveToXML(xml);
-        bank.saveToXML(xml);
     }
 
     public void saveState(Bundle bundle) {
         bundle.putSerializable(PLAYING_AREA, gameField);
-        bundle.putSerializable(PIPE_BANK, bank);
         bundle.putSerializable(PARAMETERS, params);
     }
 
     public void loadState(Bundle bundle) {
-        params = (Parameters)bundle.getSerializable(PARAMETERS);
+        params = (Parameters) bundle.getSerializable(PARAMETERS);
 
-        gameField = (PlayingArea)bundle.getSerializable(PLAYING_AREA);
-        if(gameField != null) {
+        gameField = (PlayingArea) bundle.getSerializable(PLAYING_AREA);
+        if (gameField != null) {
             gameField.syncPipes();
         }
-
-        bank = (PipeBank)bundle.getSerializable(PIPE_BANK);
     }
 
     @Override
@@ -122,59 +96,59 @@ public class GameView extends View {
         super.onDraw(canvas);
 
         int fieldWidth = canvas.getWidth();
-        int fieldHeight = (int)(canvas.getHeight() * bankLocation);
+        int fieldHeight = (int) (canvas.getHeight() * bankLocation);
         int bankWidth = canvas.getWidth();
-        int bankHeight = (int)(canvas.getHeight() * (1 - bankLocation));
+        int bankHeight = (int) (canvas.getHeight() * (1 - bankLocation));
 
         params.bankXOffset = 0f;
         params.bankYOffset = canvas.getHeight() * bankLocation;
 
-        if(canvas.getWidth() > canvas.getHeight()) {
-            fieldWidth = (int)(canvas.getWidth() * bankLocation);
+        if (canvas.getWidth() > canvas.getHeight()) {
+            fieldWidth = (int) (canvas.getWidth() * bankLocation);
             fieldHeight = canvas.getHeight();
-            bankWidth = (int)(canvas.getWidth() * (1 - bankLocation));
+            bankWidth = (int) (canvas.getWidth() * (1 - bankLocation));
             bankHeight = canvas.getHeight();
             params.bankXOffset = canvas.getWidth() * bankLocation;
             params.bankYOffset = 0f;
         }
 
-        if(params.gameFieldScale == -1f) {
-            if(fieldWidth <= fieldHeight) {
+        if (params.gameFieldScale == -1f) {
+            if (fieldWidth <= fieldHeight) {
                 params.gameFieldScale = fieldWidth / params.gameFieldWidth;
             } else {
                 params.gameFieldScale = fieldHeight / params.gameFieldHeight;
             }
         }
 
-        if(params.marginX == 10000000 || params.marginY == 10000000) {
-            params.marginX = (int)((fieldWidth - params.gameFieldWidth * params.gameFieldScale) / 2);
-            params.marginY = (int)((fieldHeight - params.gameFieldHeight * params.gameFieldScale) / 2);
+        if (params.marginX == 10000000 || params.marginY == 10000000) {
+            params.marginX = (int) ((fieldWidth - params.gameFieldWidth * params.gameFieldScale) / 2);
+            params.marginY = (int) ((fieldHeight - params.gameFieldHeight * params.gameFieldScale) / 2);
         }
 
-        if(canvas.getWidth() < canvas.getHeight()) {
-            if(params.gameFieldWidth * params.gameFieldScale < fieldWidth) {
+        if (canvas.getWidth() < canvas.getHeight()) {
+            if (params.gameFieldWidth * params.gameFieldScale < fieldWidth) {
                 params.gameFieldScale = fieldWidth / params.gameFieldWidth;
             }
         } else {
-            if(params.gameFieldHeight * params.gameFieldScale < fieldHeight) {
+            if (params.gameFieldHeight * params.gameFieldScale < fieldHeight) {
                 params.gameFieldScale = fieldHeight / params.gameFieldHeight;
             }
         }
 
-        if(params.marginX > 0) {
+        if (params.marginX > 0) {
             params.marginX = 0;
         }
 
-        if(params.marginY > 0) {
+        if (params.marginY > 0) {
             params.marginY = 0;
         }
 
-        if(fieldWidth - params.marginX > params.gameFieldWidth * params.gameFieldScale) {
-            params.marginX = fieldWidth - (int)(params.gameFieldWidth * params.gameFieldScale);
+        if (fieldWidth - params.marginX > params.gameFieldWidth * params.gameFieldScale) {
+            params.marginX = fieldWidth - (int) (params.gameFieldWidth * params.gameFieldScale);
         }
 
-        if(fieldHeight - params.marginY > params.gameFieldHeight * params.gameFieldScale) {
-            params.marginY = fieldHeight - (int)(params.gameFieldHeight * params.gameFieldScale);
+        if (fieldHeight - params.marginY > params.gameFieldHeight * params.gameFieldScale) {
+            params.marginY = fieldHeight - (int) (params.gameFieldHeight * params.gameFieldScale);
         }
 
         canvas.save();
@@ -191,7 +165,7 @@ public class GameView extends View {
         bank.draw(canvas, bankWidth, bankHeight, params.blockSize);
         canvas.restore();
 
-        if(params.currentPipe != null){
+        if (params.currentPipe != null) {
             canvas.save();
             canvas.translate(params.marginX, params.marginY);
             canvas.scale(params.gameFieldScale, params.gameFieldScale);
@@ -208,7 +182,7 @@ public class GameView extends View {
 
         int id = event.getPointerId(event.getActionIndex());
 
-        switch(event.getActionMasked()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 touch1.id = id;
                 touch2.id = -1;
@@ -219,19 +193,19 @@ public class GameView extends View {
                 float bankx = (event.getX() - params.bankXOffset);
                 float banky = (event.getY() - params.bankYOffset);
 
-                if(bankx >= 0 && banky >= 0) {
+                if (bankx >= 0 && banky >= 0) {
                     params.currentPipe = bank.hitPipe(bankx, banky);
                     bank.setActivePipe(params.currentPipe);
 
-                    if(params.currentPipe != null) {
-                        params.currentPipe.setLocation(touch1.x,touch1.y);
+                    if (params.currentPipe != null) {
+                        params.currentPipe.setLocation(touch1.x, touch1.y);
                         params.currentPipe.setGroup(params.myGroup);
                     }
                 }
 
                 params.draggingPipe = false;
                 if (params.currentPipe != null) {
-                    if(params.currentPipe.hit(touch1.x, touch1.y)) {
+                    if (params.currentPipe.hit(touch1.x, touch1.y)) {
                         params.draggingPipe = true;
                     }
                 }
@@ -247,7 +221,7 @@ public class GameView extends View {
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (touch1.id >= 0 && touch2.id < 0) {
                     touch2.id = id;
-                    if(params.draggingPipe) {
+                    if (params.draggingPipe) {
                         getPositions(event);
                     } else {
                         getPositions(event, false);
@@ -278,7 +252,7 @@ public class GameView extends View {
                 return true;
 
             case MotionEvent.ACTION_MOVE:
-                if(params.currentPipe != null && params.draggingPipe) {
+                if (params.currentPipe != null && params.draggingPipe) {
                     getPositions(event);
                     moveCurrentPipe();
                 } else {
@@ -296,21 +270,21 @@ public class GameView extends View {
     }
 
     private void getPositions(MotionEvent event, boolean makeRelativeToPlayArea) {
-        for(int i=0;  i<event.getPointerCount();  i++) {
+        for (int i = 0; i < event.getPointerCount(); i++) {
             int id = event.getPointerId(i);
             float x = event.getX(i);
             float y = event.getY(i);
 
-            if(makeRelativeToPlayArea) {
+            if (makeRelativeToPlayArea) {
                 x = (x - params.marginX) / params.gameFieldScale;
                 y = (y - params.marginY) / params.gameFieldScale;
             }
 
-            if(id == touch1.id) {
+            if (id == touch1.id) {
                 touch1.copyToLast();
                 touch1.x = x;
                 touch1.y = y;
-            } else if(id == touch2.id) {
+            } else if (id == touch2.id) {
                 touch2.copyToLast();
                 touch2.x = x;
                 touch2.y = y;
@@ -321,18 +295,18 @@ public class GameView extends View {
     }
 
     private void movePlayingArea() {
-        if(touch1.id < 0) {
+        if (touch1.id < 0) {
             return;
         }
 
-        if(touch1.id >= 0) {
+        if (touch1.id >= 0) {
             touch1.computeDeltas();
 
             params.marginX += touch1.dX;
             params.marginY += touch1.dY;
         }
 
-        if(touch2.id >= 0) {
+        if (touch2.id >= 0) {
             float distance1 = distance(touch1.lastX, touch1.lastY, touch2.lastX, touch2.lastY);
             float distance2 = distance(touch1.x, touch1.y, touch2.x, touch2.y);
             float ra = distance2 / distance1;
@@ -354,20 +328,20 @@ public class GameView extends View {
     }
 
     private float distance(float x1, float y1, float x2, float y2) {
-        return (float)Math.hypot(x2 - x1, y2 - y1);
+        return (float) Math.hypot(x2 - x1, y2 - y1);
     }
 
     private void moveCurrentPipe() {
-        if(touch1.id < 0) {
+        if (touch1.id < 0) {
             return;
         }
 
-        if(touch1.id >= 0) {
+        if (touch1.id >= 0) {
             touch1.computeDeltas();
 
             params.currentPipe.setLocation(params.currentPipe.getX() + touch1.dX, params.currentPipe.getY() + touch1.dY);
         }
-        if(touch2.id >= 0) {
+        if (touch2.id >= 0) {
             float angle1 = angle(touch1.lastX, touch1.lastY, touch2.lastX, touch2.lastY);
             float angle2 = angle(touch1.x, touch1.y, touch2.x, touch2.y);
             float da = angle2 - angle1;
@@ -422,8 +396,8 @@ public class GameView extends View {
 
         params.blockSize = params.playerOneStart.getBitmapHeight();
     }
-    
-    public void installPipe(){
+
+    public void installPipe() {
         float originalRotation = params.currentPipe.getBitmapRotation();
 
         int x = getPlayingAreaXCoord(params.currentPipe.getX());
@@ -431,8 +405,8 @@ public class GameView extends View {
         params.currentPipe.snapRotation();
 
         params.currentPipe.set(gameField, x, y);
-        if(gameField.getPipe(x, y) == null && params.currentPipe.validConnection()) {
-            gameField.add(params.currentPipe, x ,y);
+        if (gameField.getPipe(x, y) == null && params.currentPipe.validConnection()) {
+            gameField.add(params.currentPipe, x, y);
             discard();
         } else {
             params.currentPipe.resetConnections();
@@ -443,7 +417,7 @@ public class GameView extends View {
         }
     }
 
-    public boolean isMyTurn() {
+    public boolean isTurn() {
         return params.myTurn;
     }
 
@@ -462,10 +436,10 @@ public class GameView extends View {
         invalidate();
     }
 
-    public boolean openValve() {
+    public boolean tryOpenValve() {
         params.myStart.setHandleOpen();
 
-        if(!gameField.search(params.myStart)) {
+        if (!gameField.search(params.myStart)) {
             invalidate();
             return false;
         }
@@ -476,16 +450,16 @@ public class GameView extends View {
     }
 
     private int getPlayingAreaXCoord(float xLoc) {
-        if(xLoc >= 0f && xLoc <= params.gameFieldWidth) {
-            return (int)(xLoc / params.blockSize);
+        if (xLoc >= 0f && xLoc <= params.gameFieldWidth) {
+            return (int) (xLoc / params.blockSize);
         }
 
         return -1;
     }
 
     private int getPlayingAreaYCoord(float yLoc) {
-        if(yLoc >= 0f && yLoc <= params.gameFieldHeight) {
-            return (int)(yLoc / params.blockSize);
+        if (yLoc >= 0f && yLoc <= params.gameFieldHeight) {
+            return (int) (yLoc / params.blockSize);
         }
 
         return -1;
@@ -493,7 +467,7 @@ public class GameView extends View {
 
     public void setPlayerNames(String me, String them, Pipe.PipeGroup myGroup) {
         params.myGroup = myGroup;
-        switch(myGroup) {
+        switch (myGroup) {
             case PLAYER_ONE:
                 params.playerOneStart.setPlayerName(me);
                 params.playerTwoStart.setPlayerName(them);
@@ -512,75 +486,53 @@ public class GameView extends View {
     public dimension getBoardSize() {
         return params.boardSize;
     }
-    public void setGameOver(String winner) {
+
+    public void isGameOver(String winner) {
         params.winner = winner;
         params.gameOver = true;
     }
+
     public boolean gameOver() {
         return params.gameOver;
     }
+
     public String getWinner() {
         return params.winner;
     }
 
+    public enum dimension {SMALL, MEDIUM, LARGE}
+
     private static class Parameters implements Serializable {
-
         public dimension boardSize;
-
         public boolean gameOver = false;
-
         public String winner = "";
-
         public boolean myTurn = false;
-
         public Pipe.PipeGroup myGroup;
-
         public Pipe myStart;
-
         public Pipe myEnd;
-
         public Pipe playerOneStart;
-
         public Pipe playerTwoStart;
-
         public Pipe playerOneEnd;
-
         public Pipe playerTwoEnd;
-
         public Pipe currentPipe = null;
-
         public boolean draggingPipe = false;
-
         public float blockSize = 0f;
-
         public float gameFieldWidth = 0f;
-
         public float gameFieldHeight = 0f;
-
         public int marginX = 10000000;
-
         public int marginY = 10000000;
-
         public float bankXOffset = 0;
-
         public float bankYOffset = 0;
-
         public float gameFieldScale = -1f;
     }
 
     private class Touch {
         public float dX = 0;
-
         public float dY = 0;
-
         public int id = -1;
-
         public float x = 0;
-
         public float y = 0;
-
         public float lastX = 0;
-
         public float lastY = 0;
 
         public void copyToLast() {

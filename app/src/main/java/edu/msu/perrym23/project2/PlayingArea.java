@@ -17,7 +17,7 @@ public class PlayingArea implements Serializable {
 
     private int height;
 
-    private Pipe [][] pipes;
+    private Pipe[][] pipes;
 
     private transient Paint debugPaint;
 
@@ -83,7 +83,7 @@ public class PlayingArea implements Serializable {
 
     public Pipe getPipe(int x, int y) {
 
-        if(x < 0 || x >= width || y < 0 || y >= height) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
             return null;
         }
         return pipes[x][y];
@@ -100,8 +100,8 @@ public class PlayingArea implements Serializable {
     }
 
     public void clearVisitedFlags() {
-        for(Pipe[] row: pipes) {
-            for(Pipe pipe : row) {
+        for (Pipe[] row : pipes) {
+            for (Pipe pipe : row) {
                 if (pipe != null) {
                     pipe.setVisited(false);
                 }
@@ -110,8 +110,8 @@ public class PlayingArea implements Serializable {
     }
 
     public void syncPipes() {
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (pipes[x][y] != null) {
                     pipes[x][y].set(this, x, y);
                 }
@@ -122,13 +122,13 @@ public class PlayingArea implements Serializable {
     public void draw(Canvas canvas, float blockSize) {
         canvas.save();
 
-        int playingAreaSize = (int)(width * blockSize);
+        int playingAreaSize = (int) (width * blockSize);
 
         canvas.drawRect(0, 0, playingAreaSize, playingAreaSize, debugPaint);
 
-        for(Pipe[] row : pipes) {
-            for(Pipe pipe : row) {
-                if(pipe != null) {
+        for (Pipe[] row : pipes) {
+            for (Pipe pipe : row) {
+                if (pipe != null) {
                     pipe.drawInPlayingArea(canvas);
                 }
             }

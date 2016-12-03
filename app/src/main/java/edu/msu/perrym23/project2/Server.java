@@ -55,7 +55,7 @@ public class Server {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return null;
             }
 
@@ -63,7 +63,7 @@ public class Server {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
             while ((line = reader.readLine()) != null) {
-               name = line;
+                name = line;
             }
             return name;
 
@@ -84,7 +84,7 @@ public class Server {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return null;
             }
 
@@ -113,7 +113,7 @@ public class Server {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return null;
             }
 
@@ -141,10 +141,10 @@ public class Server {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return;
             }
-        }  catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             return;
         } catch (IOException ex) {
         }
@@ -196,7 +196,9 @@ public class Server {
         try {
             URL url = new URL(query);
 
-            if (cancel) { return false; }
+            if (cancel) {
+                return false;
+            }
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -204,7 +206,7 @@ public class Server {
             }
 
             stream = conn.getInputStream();
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -213,7 +215,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -233,7 +235,7 @@ public class Server {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return null;
             }
 
@@ -286,7 +288,7 @@ public class Server {
         InputStream stream = null;
         try {
             String query;
-            switch(mode) {
+            switch (mode) {
                 case CREATE:
                     query = CREATE_NEW_GAME + "?username=" + usr;
                     break;
@@ -311,13 +313,13 @@ public class Server {
             out.close();
 
             int responseCode = conn.getResponseCode();
-            if(responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return false;
             }
 
             stream = conn.getInputStream();
 
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -326,7 +328,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -346,7 +348,9 @@ public class Server {
         try {
             URL url = new URL(query);
 
-            if (cancel) { return false; }
+            if (cancel) {
+                return false;
+            }
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             String postDataStr = "bullshit";
@@ -367,7 +371,7 @@ public class Server {
             }
 
             stream = conn.getInputStream();
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -376,7 +380,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -395,7 +399,9 @@ public class Server {
         try {
             URL url = new URL(query);
 
-            if (cancel) { return false; }
+            if (cancel) {
+                return false;
+            }
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -403,7 +409,7 @@ public class Server {
             }
 
             stream = conn.getInputStream();
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -412,7 +418,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -433,7 +439,9 @@ public class Server {
         try {
             URL url = new URL(query);
 
-            if (cancel) { return false; }
+            if (cancel) {
+                return false;
+            }
             Log.i("response: ", "made it in");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             int responseCode = conn.getResponseCode();
@@ -442,7 +450,7 @@ public class Server {
             }
 
             stream = conn.getInputStream();
-            if(serverFailed(stream)) {
+            if (serverFailed(stream)) {
                 return false;
             }
 
@@ -451,7 +459,7 @@ public class Server {
         } catch (IOException ex) {
             return false;
         } finally {
-            if(stream != null) {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException ex) {
@@ -462,6 +470,7 @@ public class Server {
 
         return true;
     }
+
 
     private boolean serverFailed(InputStream stream) {
         boolean fail = true;
@@ -491,13 +500,12 @@ public class Server {
     public static void skipToEndTag(XmlPullParser xml)
             throws IOException, XmlPullParserException {
         int tag;
-        do
-        {
+        do {
             tag = xml.next();
-            if(tag == XmlPullParser.START_TAG) {
+            if (tag == XmlPullParser.START_TAG) {
                 skipToEndTag(xml);
             }
-        } while(tag != XmlPullParser.END_TAG &&
+        } while (tag != XmlPullParser.END_TAG &&
                 tag != XmlPullParser.END_DOCUMENT);
     }
 }

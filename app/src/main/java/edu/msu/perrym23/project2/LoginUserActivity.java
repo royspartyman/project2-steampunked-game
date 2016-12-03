@@ -176,18 +176,17 @@ public class LoginUserActivity extends AppCompatActivity {
                 protected void onPostExecute(Boolean success) {
                     progressDialog.dismiss();
                     if (success) {
-                        //Game is starting with Player 2 waiting on Player 1
-                        intent.putExtra(GameActivity.PLAYER_TWO_NAME, username);
-                        intent.putExtra(GameActivity.PLAYER_ONE_STARTING, false);
+                        // Start the game as player 2
+                        intent.putExtra(GameActivity.AM_PLAYER_ONE, false);
                     } else {
-                        //Game is starting with Player 1 waiting for Player 2 to join
-                        intent.putExtra(GameActivity.PLAYER_ONE_STARTING, true);
+                        // Start the game as player 1
+                        intent.putExtra(GameActivity.AM_PLAYER_ONE, true);
                         intent.putExtra(GameView.BOARD_SIZE, boardSize);
-                        intent.putExtra(GameActivity.PLAYER_ONE_NAME, username);
                     }
+                    intent.putExtra(GameActivity.MY_NAME, username);
                     startActivity(intent);
                 }
-            }.execute(username, "");
+            }.execute(username);
         }
     }
 

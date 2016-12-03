@@ -13,13 +13,6 @@ class PipeBank implements Serializable {
 
     public final int bankSize = 5;
 
-    private final PipeProbability[] relativePipeProbs = {
-            new PipeProbability(Pipe.pipeType.STRAIGHT, 1),
-            new PipeProbability(Pipe.pipeType.RIGHT_ANGLE, 2),
-            new PipeProbability(Pipe.pipeType.TEE, 2),
-            new PipeProbability(Pipe.pipeType.CAP, 1)
-    };
-
     private Pipe[] pipes = new Pipe[bankSize];
 
     private Pipe activePipe = null;
@@ -49,22 +42,17 @@ class PipeBank implements Serializable {
         }
     }
 
-    private Pipe getRandomPipe() {
-        int probTotal = 0;
+    public Pipe getRandomPipe() {
+        int i = random.nextInt(4);
 
-        for (PipeProbability pair : relativePipeProbs) {
-            probTotal += pair.relativeProb;
+        if (i == 0) {
+            return new Pipe(context, Pipe.pipeType.STRAIGHT);
+        } else if (i == 1) {
+            return new Pipe(context, Pipe.pipeType.CAP);
+        } else if (i == 2) {
+            return new Pipe(context, Pipe.pipeType.RIGHT_ANGLE);
         }
-
-        int index = random.nextInt(probTotal);
-        int sum = 0;
-        int i = 0;
-
-        while (sum <= index) {
-            sum = sum + relativePipeProbs[i++].relativeProb;
-        }
-
-        return new Pipe(context, relativePipeProbs[i - 1].type);
+        return new Pipe(context, Pipe.pipeType.TEE);
     }
 
     public void setActivePipe(Pipe active) {
@@ -150,16 +138,6 @@ class PipeBank implements Serializable {
 
                 canvas.restore();
             }
-        }
-    }
-
-    private static class PipeProbability implements Serializable {
-        public Pipe.pipeType type;
-        public int relativeProb;
-
-        public PipeProbability(Pipe.pipeType typ, int prob) {
-            type = typ;
-            relativeProb = prob;
         }
     }
 }

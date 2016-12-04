@@ -271,7 +271,7 @@ public class GameActivity extends AppCompatActivity {
             protected void onPostExecute(String name) {
                 opponentName = name;
                 getGameView().setPlayerNames(myName, opponentName, Pipe.PipeGroup.PLAYER_ONE);
-                startGame();
+                uploadGameState(Server.GamePostMode.UPDATE);
             }
         }.execute(usr);
     }
@@ -363,7 +363,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             size = null;
                     }
-                    setWaitForMyTurn();
                     if (size != null && p1 != null && p2 != null) {
                         initializeGame(p1, p2, size);
                     } else {
@@ -387,6 +386,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             opponentName = p2;
         }
+        setWaitForMyTurn();
     }
 
     @Override
@@ -573,6 +573,7 @@ public class GameActivity extends AppCompatActivity {
             } else {
                 if(isFirstTime){
                     Log.i("UPLOAD GAME", "COMPLETE FIRST TIME");
+                    startGame();
                     isFirstTime = false;
                 }else{
                     Log.i("UPLOAD GAME", "COMPLETE: SWITCHING TURNS");

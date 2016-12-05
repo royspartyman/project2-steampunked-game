@@ -2,6 +2,7 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,6 +20,8 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginUserActivity extends AppCompatActivity {
 
@@ -136,9 +139,20 @@ public class LoginUserActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/christmas.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         setContentView(R.layout.activity_login_user);
         ButterKnife.bind(this);
     }
@@ -177,6 +191,7 @@ public class LoginUserActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (success) {
                         // Start the game as player 2
+                        intent.putExtra(GameView.BOARD_SIZE, boardSize);
                         intent.putExtra(GameActivity.AM_PLAYER_ONE, false);
                     } else {
                         // Start the game as player 1

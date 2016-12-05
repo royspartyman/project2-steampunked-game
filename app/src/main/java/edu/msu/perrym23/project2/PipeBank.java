@@ -31,10 +31,8 @@ class PipeBank implements Serializable {
 
     public PipeBank(Context context) {
         this.context = context;
-
         bankPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bankPaint.setColor(Color.argb(90, 0, 100, 0));
-
+        bankPaint.setColor(Color.rgb(55,139,41));
         for (int i = 0; i < bankSize; i++) {
             if (pipes[i] == null) {
                 pipes[i] = getRandomPipe();
@@ -78,7 +76,6 @@ class PipeBank implements Serializable {
 
         int section = (int) (pos / (spacing + pipeDim));
         if ((section < bankSize) && (pos % (spacing + pipeDim) > spacing)) {
-            Log.i("Hit Pipe", "You hit pipe " + section + " in the pipe bank.");
             return pipes[section];
         }
 

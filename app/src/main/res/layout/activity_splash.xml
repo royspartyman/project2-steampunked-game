@@ -12,12 +12,12 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/pumpkin_one"
+                android:id="@+id/christmas_tree_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_christmas_tree"
@@ -30,23 +30,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:tint="@color/white"
+            <TextView
+                fontPath="fonts/christmas.ttf"
                 android:id="@+id/logo"
                 android:layout_height="wrap_content"
                 android:layout_width="250dp"
+                android:textSize="35sp"
+                android:gravity="center"
                 android:text="@string/steampunked"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:src="@drawable/splashland" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/pumpkin_two"
+                android:id="@+id/christmas_tree_two"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_christmas_tree"
@@ -61,13 +63,14 @@
     </LinearLayout>
 
     <TextView
+        fontPath="fonts/santa.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/christmas_edition"
         android:textAllCaps="true"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         />
 
 

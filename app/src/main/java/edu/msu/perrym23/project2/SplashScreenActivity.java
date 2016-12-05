@@ -15,11 +15,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    @BindView(R.id.pumpkin_one)
-    ImageView punpkinOneIV;
+    @BindView(R.id.christmas_tree_one)
+    ImageView christmasTreeOne;
 
-    @BindView(R.id.pumpkin_two)
-    ImageView punpkinTwoIV;
+    @BindView(R.id.christmas_tree_two)
+    ImageView christmasTreeTwo;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -44,8 +44,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         Thread timerThread = new Thread() {
             public void run() {
                 try {
-                    punpkinOneIV.startAnimation(rotate);
-                    punpkinTwoIV.startAnimation(rotate);
+                    christmasTreeOne.startAnimation(rotate);
+                    christmasTreeTwo.startAnimation(rotate);
                     sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

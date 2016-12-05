@@ -92,7 +92,7 @@ public class Pipe implements Serializable {
 
             case RIGHT_ANGLE:
                 setConnections(false, true, true, false);
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.a90);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.curve);
                 break;
 
             case CAP:

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Project2</string>
-    <string name="steampunked">Steampunked</string>
+    <string name="steampunked">STEAMPUNKED</string>
     <string name="title_activity_end_game">EndGameActivity</string>
     <string name="player1">Player 1</string>
     <string name="player2">Player 2</string>
@@ -15,6 +15,7 @@
     <string name="home">Home</string>
     <string name="again">Play Again</string>
     <string name="howtoplay">How to play!</string>
+
     <string name="directions">
         First, if you have not created an account, go the register page.
         \n\n
@@ -36,6 +37,7 @@
         \n\n
         Good luck!
     </string>
+
     <string name="install">install</string>
     <string name="discard">discard</string>
     <string name="open_valve">open valve</string>
@@ -46,7 +48,7 @@
     <string name="playerWin">player win</string>
     <string name="gameNew">new</string>
     <string name="openValve">open</string>
-    <string name="your_turn">yourturn</string>
+    <string name="your_turn">Your turn </string>
     <string name="back_to_menu_button">Back to main menu</string>
     <string name="game_over_text">GAME OVER</string>
     <string name="_5_x_5">5 x 5</string>
@@ -56,9 +58,6 @@
     <string name="roy_it_s_your_turn">Roy, it\'s your turn!</string>
     <string name="open">Open</string>
     <string name="name">Name</string>
-    <string name="select_a_color">Select a color:</string>
-    <string name="select_a_bat">Select a bat:</string>
-    <string name="halloween_edition">Halloween Edition</string>
     <string name="login">Login</string>
     <string name="new_user">New user</string>
     <string name="password">Password: </string>

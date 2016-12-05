@@ -2,6 +2,7 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,11 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +30,16 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class GameActivity extends AppCompatActivity {
 
-    public final static String MY_NAME = "edu.msu.rudnickw.steampunked.MY_NAME";
-    public final static String AM_PLAYER_ONE = "edu.msu.rudnickw.steampunked.AM_PLAYER_ONE";
+    public final static String MY_NAME = "edu.msu.perrym23.project2.MY_NAME";
+    public final static String AM_PLAYER_ONE = "edu.msu.perrym23.project2.AM_PLAYER_ONE";
 
     private final static String PLAYER_NAME = "my_name";
     private final static String TOKEN = "token";
@@ -49,13 +58,69 @@ public class GameActivity extends AppCompatActivity {
     TimerTask waitForMyTurn;
 
     private GameView.dimension gameSize = null;
-
     private boolean isFirstTime = true;
+
+    @BindView(R.id.currentPlayer)
+    TextView currentPlayerTV;
+
+    @BindView(R.id.install)
+    FloatingActionButton installFAB;
+
+    @BindView(R.id.open)
+    FloatingActionButton openFAB;
+
+    @BindView(R.id.discard)
+    FloatingActionButton discardFAB;
+
+    @BindView(R.id.forfeit)
+    FloatingActionButton forfeitFAB;
+
+
+    @OnClick(R.id.install)
+    public void onInstallFABClick(){
+        getGameView().installPipe();
+        updateUI();
+
+        if (!getGameView().isTurn()) {
+            uploadGameState(Server.GamePostMode.UPDATE);
+        }
+    }
+
+    @OnClick(R.id.open)
+    public void onOpenFABClick(){
+        if (getGameView().tryOpenValve()) {
+            onGameOver(myName);
+        } else {
+            onGameOver(opponentName);
+        }
+    }
+
+    @OnClick(R.id.discard)
+    public void onDiscardFABClick(){
+        getGameView().discard();
+        updateUI();
+
+        if (!getGameView().isTurn()) {
+            uploadGameState(Server.GamePostMode.UPDATE);
+        }
+    }
+
+    @OnClick(R.id.forfeit)
+    public void onForfeitFABClick(){
+        onGameOver(opponentName);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
             myName = savedInstanceState.getString(PLAYER_NAME);
@@ -73,6 +138,7 @@ public class GameActivity extends AppCompatActivity {
                 uploadGameState(Server.GamePostMode.CREATE);
                 setWaitForPlayerTwo();
             } else {
+                getGameView().initialize(intent);
                 getInitialGame();
                 isFirstTime = false;
             }
@@ -370,8 +436,6 @@ public class GameActivity extends AppCompatActivity {
                             size = null;
                     }
 
-                    gameSize = size;
-
                     if (size != null && p1 != null && p2 != null) {
                         initializeGame(p1, p2, size);
                     } else {
@@ -380,8 +444,6 @@ public class GameActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         quitGame();
                     }
-
-                    setWaitForMyTurn();
                 }
             }
         }.execute(myName);
@@ -397,12 +459,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             opponentName = p2;
         }
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        setWaitForMyTurn();
     }
 
     @Override
@@ -436,12 +493,6 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /*
-         * Ask if the user is sure they want to quit the current game.
-         *
-         * If they do then call super.onBackPressed().
-         * If they don't then do nothing.
-         */
         AlertDialog.Builder builder = new AlertDialog.Builder(getGameView().getContext());
         builder.setTitle(R.string.quit_game);
         builder.setMessage(R.string.quit_game_confirmation);
@@ -457,7 +508,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void quitGame() {
-
         new AsyncTask<String, Void, Void>() {
 
             @Override
@@ -473,35 +523,6 @@ public class GameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onSurrender(View view) {
-        onGameOver(opponentName);
-    }
-
-    public void onInstall(View view) {
-        getGameView().installPipe();
-        updateUI();
-
-        if (!getGameView().isTurn()) {
-            uploadGameState(Server.GamePostMode.UPDATE);
-        }
-    }
-
-    public void onDiscard(View view) {
-        getGameView().discard();
-        updateUI();
-
-        if (!getGameView().isTurn()) {
-            uploadGameState(Server.GamePostMode.UPDATE);
-        }
-    }
-
-    public void onOpenValve(View view) {
-        if (getGameView().tryOpenValve()) {
-            onGameOver(myName);
-        } else {
-            onGameOver(opponentName);
-        }
-    }
 
     /**
      * Once someone wins or there is a forfeit
@@ -523,23 +544,19 @@ public class GameActivity extends AppCompatActivity {
         TextView currentPlayer = (TextView) findViewById(R.id.currentPlayer);
         String yourTurn = getString(R.string.your_turn) + '\n' + myName;
         String waitingFor = getString(R.string.waiting_for) + '\n' + opponentName;
-        Button discard = (Button) findViewById(R.id.discardButton);
-        Button install = (Button) findViewById(R.id.installButton);
-        Button surrender = (Button) findViewById(R.id.surrender);
-        Button openValve = (Button) findViewById(R.id.openValveButton);
 
         if (getGameView().isTurn()) {
-            currentPlayer.setText(yourTurn);
-            discard.setEnabled(true);
-            install.setEnabled(true);
-            surrender.setEnabled(true);
-            openValve.setEnabled(true);
+            currentPlayerTV.setText(yourTurn);
+            discardFAB.setEnabled(true);
+            installFAB.setEnabled(true);
+            forfeitFAB.setEnabled(true);
+            openFAB.setEnabled(true);
         } else {
-            currentPlayer.setText(waitingFor);
-            discard.setEnabled(false);
-            install.setEnabled(false);
-            surrender.setEnabled(false);
-            openValve.setEnabled(false);
+            currentPlayerTV.setText(waitingFor);
+            discardFAB.setEnabled(false);
+            installFAB.setEnabled(false);
+            forfeitFAB.setEnabled(false);
+            openFAB.setEnabled(false);
         }
     }
 

@@ -172,7 +172,10 @@ public class Pipe implements Serializable {
         float rot = Float.parseFloat(xml.getAttributeValue(null, "rotation"));
 
         newPipe.setBitmapRotation(rot);
-        newPipe.snapRotation();
+
+        if(newPipe.type != pipeType.START && newPipe.type != pipeType.END) {
+            newPipe.snapRotation();
+        }
 
         int xCoord = Integer.parseInt(xml.getAttributeValue(null, "x"));
         int yCoord = Integer.parseInt(xml.getAttributeValue(null, "y"));

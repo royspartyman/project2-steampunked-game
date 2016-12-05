@@ -48,6 +48,8 @@ public class GameActivity extends AppCompatActivity {
     TimerTask waitForP2Timer;
     TimerTask waitForMyTurn;
 
+    private GameView.dimension gameSize = null;
+
     private boolean isFirstTime = true;
 
     @Override
@@ -218,6 +220,10 @@ public class GameActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String player) {
                 if(Objects.equals(player, myName)){
+                    if(!getGameView().isInitialized() && gameSize != null) {
+                        getGameView().initialize(gameSize);
+                    }
+
                     loadGameState();
                     startGame();
                     waitForMyTurn.cancel();
@@ -363,7 +369,9 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             size = null;
                     }
-                    setWaitForMyTurn();
+
+                    gameSize = size;
+
                     if (size != null && p1 != null && p2 != null) {
                         initializeGame(p1, p2, size);
                     } else {
@@ -372,6 +380,8 @@ public class GameActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         quitGame();
                     }
+
+                    setWaitForMyTurn();
                 }
             }
         }.execute(myName);
@@ -386,6 +396,12 @@ public class GameActivity extends AppCompatActivity {
             getGameView().setPlayerNames(myName, opponentName, Pipe.PipeGroup.PLAYER_TWO);
         } else {
             opponentName = p2;
+        }
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

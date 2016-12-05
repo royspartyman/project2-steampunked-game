@@ -68,6 +68,8 @@ public class GameActivity extends AppCompatActivity {
     private boolean isWaitForPlayerTwo = false;
     private boolean isWaitForMyTurn = false;
 
+    private boolean isGameOver = false;
+
     @BindView(R.id.currentPlayer)
     TextView currentPlayerTV;
 
@@ -239,6 +241,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void setWaitForMyTurn() {
+        if(isGameOver) { return; }
         progressDialog = ProgressDialog.show(GameActivity.this,
                 getString(R.string.please_wait),
                 getString(R.string.waiting_for_other_player), true, false);
@@ -569,6 +572,7 @@ public class GameActivity extends AppCompatActivity {
      * Once someone wins or there is a forfeit
      */
     public void onGameOver(String winner) {
+        isGameOver = true;
         getGameView().isGameOver(winner);
         uploadGameState(Server.GamePostMode.UPDATE);
         Intent intent = new Intent(this, EndGameActivity.class);

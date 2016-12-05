@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -40,6 +41,8 @@ public class LoginUserActivity extends AppCompatActivity {
     private String password;
     GameView.dimension boardSize;
     private boolean autoLoggingIn = false;
+    private static Random random = new Random(System.nanoTime());
+
 
     @BindView(R.id.login)
     Button loginButton;
@@ -47,27 +50,24 @@ public class LoginUserActivity extends AppCompatActivity {
     @BindView(R.id.new_user)
     Button newUserButton;
 
-    @BindViews({R.id.fivebyfive, R.id.tenbyten, R.id.twentybytwenty})
-    List<Button> gameSizeButtons;
+    @BindView(R.id.play_now)
+    Button playNowButton;
 
     /* Start 5x5 game */
-    @OnClick(R.id.fivebyfive)
+    @OnClick(R.id.play_now)
     public void onFiveClick() {
-        boardSize = GameView.dimension.SMALL;
-        newGame(this.getCurrentFocus());
-    }
 
-    /* Start 10x10 game */
-    @OnClick(R.id.tenbyten)
-    public void onTenClick() {
-        boardSize = GameView.dimension.MEDIUM;
-        newGame(this.getCurrentFocus());
-    }
+        int i = random.nextInt(3);
 
-    /* Start 20x20 game */
-    @OnClick(R.id.twentybytwenty)
-    public void onTwentyClick() {
-        boardSize = GameView.dimension.LARGE;
+        if(i == 0){
+            boardSize = GameView.dimension.SMALL;
+        }
+        else if(i == 1){
+            boardSize = GameView.dimension.MEDIUM;
+        }else{
+            boardSize = GameView.dimension.MEDIUM;
+        }
+
         newGame(this.getCurrentFocus());
     }
 
@@ -350,16 +350,11 @@ public class LoginUserActivity extends AppCompatActivity {
         if (isLoggedIn) {
             loginButton.setText(R.string.Logout);
             newUserButton.setVisibility(View.GONE);
-            gameSizeButtons.get(0).setVisibility(View.VISIBLE);
-            gameSizeButtons.get(1).setVisibility(View.VISIBLE);
-            gameSizeButtons.get(2).setVisibility(View.VISIBLE);
-
+            playNowButton.setVisibility(View.VISIBLE);
         } else {
             loginButton.setText(R.string.login);
             newUserButton.setVisibility(View.VISIBLE);
-            gameSizeButtons.get(0).setVisibility(View.GONE);
-            gameSizeButtons.get(1).setVisibility(View.GONE);
-            gameSizeButtons.get(2).setVisibility(View.GONE);
+            playNowButton.setVisibility(View.GONE);
         }
     }
 }

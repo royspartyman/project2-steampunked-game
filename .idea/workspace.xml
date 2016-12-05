@@ -22,8 +22,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/LoginUserActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/LoginUserActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialogue_login_user.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialogue_login_user.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="project2-steampunked-game.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,11 +71,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GameActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="702" column="42" selection-start-line="702" selection-start-column="42" selection-end-line="702" selection-end-column="42" />
+            <state relative-caret-position="445">
+              <caret line="214" column="35" selection-start-line="214" selection-start-column="35" selection-end-line="214" selection-end-column="35" />
+              <folding>
+                <element signature="e#5781#5812#0" expanded="true" />
+                <element signature="e#5834#5868#0" expanded="true" />
+                <element signature="e#6383#6690#0" expanded="true" />
+                <element signature="e#6689#6690#0" expanded="true" />
+                <element signature="e#16217#16235#0" expanded="true" />
+                <element signature="e#23347#23368#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -95,13 +114,12 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="107" column="38" selection-start-line="107" selection-start-column="38" selection-end-line="107" selection-end-column="38" />
+            <state relative-caret-position="160">
+              <caret line="75" column="37" selection-start-line="75" selection-start-column="37" selection-end-line="75" selection-end-column="37" />
               <folding>
                 <element signature="e#1908#1923#0" expanded="true" />
                 <element signature="e#2516#2534#0" expanded="true" />
-                <element signature="e#3033#3049#0" expanded="true" />
-                <element signature="e#3584#3602#0" expanded="true" />
+                <element signature="e#3031#3049#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -143,35 +161,38 @@
       <file leaf-file-name="PipeBank.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/PipeBank.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
+            <state relative-caret-position="180">
+              <caret line="19" column="29" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameView.java">
+      <file leaf-file-name="activity_game.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_game.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="414" column="37" selection-start-line="414" selection-start-column="37" selection-end-line="414" selection-end-column="37" />
+            <state relative-caret-position="425">
+              <caret line="137" column="39" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginUserActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LoginUserActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/LoginUserActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="279" column="62" selection-start-line="279" selection-start-column="62" selection-end-line="279" selection-end-column="62" />
+            <state relative-caret-position="345">
+              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding>
-                <element signature="e#6479#6507#0" expanded="true" />
-                <element signature="e#6561#6593#0" expanded="true" />
-                <element signature="e#10515#10543#0" expanded="true" />
-                <element signature="e#10592#10624#0" expanded="true" />
-                <element signature="e#11169#11200#0" expanded="true" />
-                <element signature="e#11524#11548#0" expanded="true" />
+                <element signature="e#6374#6402#0" expanded="true" />
+                <element signature="e#6456#6488#0" expanded="true" />
+                <element signature="e#10410#10438#0" expanded="true" />
+                <element signature="e#10487#10519#0" expanded="true" />
+                <element signature="e#11064#11095#0" expanded="true" />
+                <element signature="e#11419#11443#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1992,14 +2013,14 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout-land/activity_end_game.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dialogue_new_user.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml" />
         <option value="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/Server.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dialogue_login_user.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/SharedPreferencesManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/LoginUserActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java" />
       </list>
     </option>
   </component>
@@ -2615,7 +2636,7 @@
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2660,7 +2681,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="122" column="31" selection-start-line="122" selection-start-column="31" selection-end-line="122" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#5781#5812#0" expanded="true" />
+            <element signature="e#5834#5868#0" expanded="true" />
+            <element signature="e#6383#6690#0" expanded="true" />
+            <element signature="e#6689#6690#0" expanded="true" />
+            <element signature="e#16217#16235#0" expanded="true" />
+            <element signature="e#23347#23368#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2755,7 +2783,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5820">
           <caret line="429" column="33" selection-start-line="429" selection-start-column="33" selection-end-line="429" selection-end-column="33" />
-          <folding />
+          <folding>
+            <element signature="e#5781#5812#0" expanded="true" />
+            <element signature="e#5834#5868#0" expanded="true" />
+            <element signature="e#6383#6690#0" expanded="true" />
+            <element signature="e#6689#6690#0" expanded="true" />
+            <element signature="e#16217#16235#0" expanded="true" />
+            <element signature="e#23347#23368#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2875,14 +2910,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="69" selection-start-line="24" selection-start-column="69" selection-end-line="24" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-land/activity_end_game.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2917,17 +2944,6 @@
             <element signature="e#1520#1541#0" expanded="true" />
             <element signature="e#1976#1993#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_game.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="137" column="39" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2969,22 +2985,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/Pipe.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/PipeBank.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/PlayingArea.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -2998,22 +2998,6 @@
         <state relative-caret-position="15">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="107" column="38" selection-start-line="107" selection-start-column="38" selection-end-line="107" selection-end-column="38" />
-          <folding>
-            <element signature="e#1908#1923#0" expanded="true" />
-            <element signature="e#2516#2534#0" expanded="true" />
-            <element signature="e#3033#3049#0" expanded="true" />
-            <element signature="e#3584#3602#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3036,14 +3020,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="702" column="42" selection-start-line="702" selection-start-column="42" selection-end-line="702" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Library/Android/sdk/platforms/android-25/android.jar!/android/content/Context.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -3052,17 +3028,82 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_game.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="137" column="39" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login_user.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="75" column="37" selection-start-line="75" selection-start-column="37" selection-end-line="75" selection-end-column="37" />
+          <folding>
+            <element signature="e#1908#1923#0" expanded="true" />
+            <element signature="e#2516#2534#0" expanded="true" />
+            <element signature="e#3031#3049#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/PipeBank.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/Pipe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="598">
+          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/LoginUserActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="279" column="62" selection-start-line="279" selection-start-column="62" selection-end-line="279" selection-end-column="62" />
+        <state relative-caret-position="345">
+          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
-            <element signature="e#6479#6507#0" expanded="true" />
-            <element signature="e#6561#6593#0" expanded="true" />
-            <element signature="e#10515#10543#0" expanded="true" />
-            <element signature="e#10592#10624#0" expanded="true" />
-            <element signature="e#11169#11200#0" expanded="true" />
-            <element signature="e#11524#11548#0" expanded="true" />
+            <element signature="e#6374#6402#0" expanded="true" />
+            <element signature="e#6456#6488#0" expanded="true" />
+            <element signature="e#10410#10438#0" expanded="true" />
+            <element signature="e#10487#10519#0" expanded="true" />
+            <element signature="e#11064#11095#0" expanded="true" />
+            <element signature="e#11419#11443#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/msu/perrym23/project2/GameActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="214" column="35" selection-start-line="214" selection-start-column="35" selection-end-line="214" selection-end-column="35" />
+          <folding>
+            <element signature="e#5781#5812#0" expanded="true" />
+            <element signature="e#5834#5868#0" expanded="true" />
+            <element signature="e#6383#6690#0" expanded="true" />
+            <element signature="e#6689#6690#0" expanded="true" />
+            <element signature="e#16217#16235#0" expanded="true" />
+            <element signature="e#23347#23368#0" expanded="true" />
           </folding>
         </state>
       </provider>

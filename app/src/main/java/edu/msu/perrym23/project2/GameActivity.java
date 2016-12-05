@@ -60,6 +60,9 @@ public class GameActivity extends AppCompatActivity {
     private GameView.dimension gameSize = null;
     private boolean isFirstTime = true;
 
+    private boolean isWaitForPlayerTwo = false;
+    private boolean isWaitForMyTurn = false;
+
     @BindView(R.id.currentPlayer)
     TextView currentPlayerTV;
 
@@ -196,8 +199,17 @@ public class GameActivity extends AppCompatActivity {
             progressDialog = ProgressDialog.show(GameActivity.this,
                     getString(R.string.please_wait),
                     getString(R.string.waiting_for_p2), true, false);
+            progressDialog.setCancelable(true);
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    onBackPressed();
+                    isWaitForPlayerTwo = true;
+                }
+            });
             final Handler handler = new Handler();
             Timer timer = new Timer();
+
             waitForP2Timer = new TimerTask() {
                 @Override
                 public void run() {
@@ -224,6 +236,14 @@ public class GameActivity extends AppCompatActivity {
         progressDialog = ProgressDialog.show(GameActivity.this,
                 getString(R.string.please_wait),
                 getString(R.string.waiting_for_other_player), true, false);
+        progressDialog.setCancelable(true);
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                onBackPressed();
+                isWaitForMyTurn = true;
+            }
+        });
         final Handler handler = new Handler();
         Timer timer = new Timer();
         waitForMyTurn = new TimerTask() {
@@ -502,7 +522,19 @@ public class GameActivity extends AppCompatActivity {
                 quitGame();
             }
         });
-        builder.setNegativeButton(R.string.no, null);
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(isWaitForPlayerTwo){
+                    setWaitForPlayerTwo();
+                    isWaitForPlayerTwo = false;
+                }
+                else if(isWaitForMyTurn){
+                    setWaitForMyTurn();
+                    isWaitForPlayerTwo = true;
+                }
+            }
+        });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

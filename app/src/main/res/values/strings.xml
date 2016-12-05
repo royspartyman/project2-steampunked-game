@@ -23,7 +23,7 @@
 
     <string name="title_activity_game">Game Activity</string>
     <string name="title_activity_end_game">Game End Activity</string>
-    <string name="please_wait">Pleas Wait...</string>
+    <string name="please_wait">Please Wait...</string>
     <string name="waiting_for_p2">Waiting For Player 2!</string>
     <string name="waiting_for_other_player">Waiting for other player...</string>
     <string name="initializing">Initializing game...</string>
@@ -48,6 +48,7 @@
     <string name="create_user_fail">User creation failed!</string>
     <string name="Logout">Logout</string>
     <string name="login_user_fail">User failed to login!</string>
+    <string name="play_now">Play Now</string>
 
 
 </resources>

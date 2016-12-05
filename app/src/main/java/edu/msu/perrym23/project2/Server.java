@@ -256,7 +256,7 @@ public class Server {
     }
 
 
-    public boolean sendGameState(String usr, GameActivity game, GamePostMode mode) {
+    public boolean sendGameState(String usr, String size, GameActivity game, GamePostMode mode) {
         XmlSerializer xml = Xml.newSerializer();
         StringWriter writer = new StringWriter();
 
@@ -290,7 +290,7 @@ public class Server {
             String query;
             switch (mode) {
                 case CREATE:
-                    query = CREATE_NEW_GAME + "?username=" + usr;
+                    query = CREATE_NEW_GAME + "?username=" + usr + "&size=" + size;
                     break;
                 case UPDATE:
                     query = UPDATE_GAME + "?username=" + usr;
@@ -340,9 +340,9 @@ public class Server {
         return true;
     }
 
-    public boolean joinGame(String usr) {
+    public boolean joinGame(String usr, String size) {
 
-        String query = JOIN_GAME + "?username=" + usr;
+        String query = JOIN_GAME + "?username=" + usr + "&size=" + size;
 
         InputStream stream = null;
         try {

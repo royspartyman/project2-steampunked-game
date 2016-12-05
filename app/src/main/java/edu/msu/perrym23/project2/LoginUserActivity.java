@@ -40,6 +40,7 @@ public class LoginUserActivity extends AppCompatActivity {
     private String password;
     GameView.dimension boardSize;
     private boolean autoLoggingIn = false;
+    private String game = null;
 
     @BindView(R.id.login)
     Button loginButton;
@@ -204,7 +205,19 @@ public class LoginUserActivity extends AppCompatActivity {
 
                 @Override
                 protected Boolean doInBackground(String... params) {
-                    boolean success = server.joinGame(params[0]);
+                    if(boardSize == GameView.dimension.SMALL){
+                        intent.putExtra(GameActivity.BOARDSIZE, "five");
+                        game = "five";
+                    }
+                    else if(boardSize == GameView.dimension.MEDIUM){
+                        intent.putExtra(GameActivity.BOARDSIZE, "ten");
+                        game = "ten";
+                    }
+                    else{
+                        intent.putExtra(GameActivity.BOARDSIZE, "twenty");
+                        game = "twenty";
+                    }
+                    boolean success = server.joinGame(params[0], game);
                     return success;
                 }
 

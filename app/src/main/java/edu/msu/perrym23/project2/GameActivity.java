@@ -40,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
 
     public final static String MY_NAME = "edu.msu.perrym23.project2.MY_NAME";
     public final static String AM_PLAYER_ONE = "edu.msu.perrym23.project2.AM_PLAYER_ONE";
+    public final static String BOARDSIZE = "edu.msu.perrym23.project2.BOARDSIZE";
 
     private final static String PLAYER_NAME = "my_name";
     private final static String TOKEN = "token";
@@ -59,6 +60,10 @@ public class GameActivity extends AppCompatActivity {
 
     private GameView.dimension gameSize = null;
     private boolean isFirstTime = true;
+    private String boardSize = null;
+
+    private Integer waitingCounter = 0;
+    private Integer idleCounter = 0;
 
     private boolean isWaitForPlayerTwo = false;
     private boolean isWaitForMyTurn = false;
@@ -135,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
             Intent intent = getIntent();
             myName = intent.getStringExtra(MY_NAME);
             isPlayerOne = intent.getBooleanExtra(AM_PLAYER_ONE, false);
+            boardSize = intent.getStringExtra(BOARDSIZE);
 
             if (isPlayerOne) {
                 getGameView().initialize(intent);
@@ -503,10 +509,10 @@ public class GameActivity extends AppCompatActivity {
         update.setUploadMode(mode);
         switch (mode) {
             case UPDATE:
-                update.execute(myName);
+                update.execute(myName, "");
                 break;
             case CREATE:
-                update.execute(myName);
+                    update.execute(myName, boardSize);
                 break;
         }
     }
@@ -535,6 +541,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
+        builder.setCancelable(false);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -548,11 +555,13 @@ public class GameActivity extends AppCompatActivity {
                 server.quitGame(params[0]);
                 return null;
             }
+
         }.execute(myName);
 
         Intent intent = new Intent(this, LoginUserActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
 
@@ -565,12 +574,12 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EndGameActivity.class);
         intent.putExtra(EndGameActivity.WINNER, winner);
         startActivity(intent);
+        finish();
     }
 
     GameView getGameView() {
         return (GameView) findViewById(R.id.gameView);
     }
-
     //set the current active player
     private void updateUI() {
         TextView currentPlayer = (TextView) findViewById(R.id.currentPlayer);
@@ -594,7 +603,6 @@ public class GameActivity extends AppCompatActivity {
 
 
     private class UploadTask extends AsyncTask<String, Void, Boolean> {
-
         private ProgressDialog progressDialog;
         private Server server = new Server();
         private GameActivity game;
@@ -623,7 +631,7 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            boolean success = server.sendGameState(params[0], game, uploadMode);
+            boolean success = server.sendGameState(params[0], params[1], game, uploadMode);
             return success;
         }
 

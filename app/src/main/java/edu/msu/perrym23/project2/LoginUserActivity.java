@@ -2,23 +2,32 @@ package edu.msu.perrym23.project2;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginUserActivity extends AppCompatActivity {
 
@@ -26,9 +35,12 @@ public class LoginUserActivity extends AppCompatActivity {
     private AlertDialog createUserDlg;
     public boolean newUserMade = false;
     private boolean isLoggedIn = false;
+    private boolean rememberMe = false;
     private String username;
     private String password;
     GameView.dimension boardSize;
+    private boolean autoLoggingIn = false;
+    private String game = null;
 
     @BindView(R.id.login)
     Button loginButton;
@@ -113,6 +125,8 @@ public class LoginUserActivity extends AppCompatActivity {
 
             final EditText usernameET = (EditText) dialogView.findViewById(R.id.username);
             final EditText passwordET = (EditText) dialogView.findViewById(R.id.password);
+            final CheckBox rememberCB = (CheckBox) dialogView.findViewById(R.id.remember_me);
+
 
             dialogBuilder.setView(dialogView);
             dialogBuilder.setTitle("Login");
@@ -122,6 +136,7 @@ public class LoginUserActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             String user = usernameET.getText().toString();
                             String pass = passwordET.getText().toString();
+                            rememberMe = rememberCB.isChecked();
                             loginUser(user, pass);
                         }
                     })
@@ -136,11 +151,33 @@ public class LoginUserActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/christmas.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         setContentView(R.layout.activity_login_user);
         ButterKnife.bind(this);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String username = sharedPref.getString(getString(R.string.username), "");
+        String password = sharedPref.getString(getString(R.string.password_tag), "");
+
+        if(!Objects.equals(username, "") && !Objects.equals(password, "")){
+            autoLoggingIn = true;
+            loginUser(username, password);
+        }
+
     }
 
     /* Start a new game */
@@ -168,7 +205,19 @@ public class LoginUserActivity extends AppCompatActivity {
 
                 @Override
                 protected Boolean doInBackground(String... params) {
-                    boolean success = server.joinGame(params[0]);
+                    if(boardSize == GameView.dimension.SMALL){
+                        intent.putExtra(GameActivity.BOARDSIZE, "five");
+                        game = "five";
+                    }
+                    else if(boardSize == GameView.dimension.MEDIUM){
+                        intent.putExtra(GameActivity.BOARDSIZE, "ten");
+                        game = "ten";
+                    }
+                    else{
+                        intent.putExtra(GameActivity.BOARDSIZE, "twenty");
+                        game = "twenty";
+                    }
+                    boolean success = server.joinGame(params[0], game);
                     return success;
                 }
 
@@ -177,6 +226,7 @@ public class LoginUserActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (success) {
                         // Start the game as player 2
+                        intent.putExtra(GameView.BOARD_SIZE, boardSize);
                         intent.putExtra(GameActivity.AM_PLAYER_ONE, false);
                     } else {
                         // Start the game as player 1
@@ -191,7 +241,7 @@ public class LoginUserActivity extends AppCompatActivity {
     }
 
     /* Attempt to login the user */
-    private void loginUser(String usr, final String pass) {
+    private void loginUser(final String usr, final String pass) {
         new AsyncTask<String, Void, Boolean>() {
             private ProgressDialog progressDialog;
             private Server server = new Server();
@@ -225,18 +275,35 @@ public class LoginUserActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
                 if (success) {
-                    Toast.makeText(loginDlg.getContext(),
-                            R.string.logged_in_user_success,
-                            Toast.LENGTH_SHORT).show();
-                    isLoggedIn = true;
-                    updateUI();
-                    loginDlg.dismiss();
+                    if(rememberMe){
+                        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(getString(R.string.username), usr);
+                        editor.putString(getString(R.string.password_tag), pass);
+                        editor.apply();
+                    }
+                    if(!autoLoggingIn) {
+                        Toast.makeText(loginDlg.getContext(),
+                                R.string.logged_in_user_success,
+                                Toast.LENGTH_SHORT).show();
+                        isLoggedIn = true;
+                        updateUI();
+                        loginDlg.dismiss();
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                R.string.logged_in_user_success,
+                                Toast.LENGTH_SHORT).show();
+                        isLoggedIn = true;
+                        updateUI();
+                    }
                 } else {
-                    Toast.makeText(loginDlg.getContext(),
-                            R.string.login_user_fail,
-                            Toast.LENGTH_LONG).show();
+                    if (!autoLoggingIn) {
+                        Toast.makeText(loginDlg.getContext(),
+                                R.string.login_user_fail,
+                                Toast.LENGTH_LONG).show();
                     isLoggedIn = false;
                     loginDlg.dismiss();
+                }
                 }
             }
         }.execute(usr, pass);

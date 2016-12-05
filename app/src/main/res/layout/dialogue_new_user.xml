@@ -1,81 +1,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="horizontal">
 
         <TextView
+            fontPath="fonts/santa.ttf"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/username_input"
-            />
+            android:text="@string/username" />
 
         <EditText
             android:id="@+id/username"
+            fontPath="fonts/santa.ttf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cursorVisible="false"
-            android:maxLength="18"
+            android:hint="@string/username_tag"
             android:imeOptions="actionDone"
-            android:hint="@string/username" />
+            android:maxLength="18" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="horizontal">
 
         <TextView
+            fontPath="fonts/santa.ttf"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/password"
-            />
+            android:text="@string/password_label" />
 
         <EditText
             android:id="@+id/password"
+            fontPath="fonts/santa.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
-            android:maxLength="12"
+            android:hint="@string/password_tag"
             android:imeOptions="actionDone"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="12" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="horizontal">
 
         <TextView
+            fontPath="fonts/santa.ttf"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/password_confirm"
-            />
+            android:text="@string/password_confirm" />
 
         <EditText
             android:id="@+id/confirmPassword"
+            fontPath="fonts/santa.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
-            android:maxLength="12"
+            android:hint="@string/password_tag"
             android:imeOptions="actionDone"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="12" />
     </LinearLayout>
-
 
 
 </LinearLayout>

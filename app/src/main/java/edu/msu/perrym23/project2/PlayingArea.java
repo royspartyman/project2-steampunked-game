@@ -19,14 +19,14 @@ public class PlayingArea implements Serializable {
 
     private Pipe[][] pipes;
 
-    private transient Paint debugPaint;
+    private transient Paint playingAreaPaint;
 
     public PlayingArea(int width, int height) {
         this.width = width;
         this.height = height;
         pipes = new Pipe[width][height];
-        debugPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        debugPaint.setColor(Color.argb(25, 0, 100, 82));
+        playingAreaPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        playingAreaPaint.setColor(Color.rgb(255,255,255));
     }
 
     public void loadFromSavedState(XmlPullParser xml, GameView view) throws IOException, XmlPullParserException {
@@ -124,7 +124,7 @@ public class PlayingArea implements Serializable {
 
         int playingAreaSize = (int) (width * blockSize);
 
-        canvas.drawRect(0, 0, playingAreaSize, playingAreaSize, debugPaint);
+        canvas.drawRect(0, 0, playingAreaSize, playingAreaSize, playingAreaPaint);
 
         for (Pipe[] row : pipes) {
             for (Pipe pipe : row) {

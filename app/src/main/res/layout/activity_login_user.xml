@@ -73,11 +73,39 @@
 
         <Button
             fontPath="fonts/christmas.ttf"
-            android:id="@+id/play_now"
+            android:id="@+id/fivebyfive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/red"
-            android:text="@string/play_now"
+            android:text="@string/_5_x_5"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            fontPath="fonts/christmas.ttf"
+            android:id="@+id/tenbyten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/_10_x_10"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            fontPath="fonts/christmas.ttf"
+            android:id="@+id/twentybytwenty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/_20_x_20"
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="gone"

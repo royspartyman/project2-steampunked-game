@@ -1,106 +1,53 @@
 <resources>
     <string name="app_name">Project2</string>
     <string name="steampunked">STEAMPUNKED</string>
-    <string name="title_activity_end_game">EndGameActivity</string>
-    <string name="player1">Player 1</string>
-    <string name="player2">Player 2</string>
-    <string name="startGame">Start Game</string>
-    <string name="howToPlay">How to Play</string>
-    <string name="matrixSize">Pick a Matrix Size</string>
-    <string name="place_button">Place</string>
-    <string name="title_activity_game">GameActivity</string>
-    <string name="p1Turn">Player 1</string>
-    <string name="title_activity_activity_end">End</string>
-    <string name="gameover">Game Over</string>
-    <string name="home">Home</string>
-    <string name="again">Play Again</string>
-    <string name="howtoplay">How to play!</string>
-
-    <string name="directions">
-        First, if you have not created an account, go the register page.
-        \n\n
-        If you have an account, sign in and either continue your game, or start a new game.
-        \n\n
-        The object of the game is to connect your pipe, labeled as such, to one of the finishing
-        pipes, labeled with a pressure gauge.
-        \n\n
-        You take turns placing pipes on the board. You can only place pipes to your original pipe
-        with your name. You must do this with no leaks or openings in the pipe.
-        \n\n
-        You can discard a pipe if you do not want this pipe to be picked and a new pipe will appear
-        in its place. This will cost you a turn.
-        \n\n
-        If at any point you want to give up, you may press the surrender button.
-        \n\n
-        If you think you have a leak free connection, you may open the valve and see if you have
-        won. If you open the valve and you have a leak, you lose.
-        \n\n
-        Good luck!
-    </string>
-
-    <string name="install">install</string>
-    <string name="discard">discard</string>
-    <string name="open_valve">open valve</string>
-    <string name="surrender">surrender</string>
-    <string name="invalid_connection">invalid connection, try again</string>
-    <string name="newGame">new</string>
-    <string name="winner_name">winner</string>
-    <string name="playerWin">player win</string>
-    <string name="gameNew">new</string>
-    <string name="openValve">open</string>
-    <string name="your_turn">Your turn </string>
-    <string name="back_to_menu_button">Back to main menu</string>
-    <string name="game_over_text">GAME OVER</string>
+    <string name="winner">Winner!</string>
+    <string name="winner_name">Dummy</string>
+    <string name="newGame">Main Menu</string>
+    <string name="username">Username:</string>
+    <string name="username_tag">Username</string>
+    <string name="password_label">Password:</string>
+    <string name="password_tag">Password</string>
+    <string name="password_confirm">Cofirm Password:</string>
+    <string name="christmas_edition">Christmas Edition</string>
+    <string name="login">Login</string>
+    <string name="new_user">New User</string>
     <string name="_5_x_5">5 x 5</string>
     <string name="_10_x_10">10 x 10</string>
     <string name="_20_x_20">20 x 20</string>
+    <string name="install">Install</string>
     <string name="forfeit">Forfeit</string>
-    <string name="roy_it_s_your_turn">Roy, it\'s your turn!</string>
+    <string name="roy_it_s_your_turn">Roy! It is your turn.</string>
+    <string name="discard">Discard</string>
     <string name="open">Open</string>
-    <string name="name">Name</string>
-    <string name="login">Login</string>
-    <string name="new_user">New user</string>
-    <string name="password">Password: </string>
-    <string name="username">Username</string>
-    <string name="username_input">Username: </string>
-    <string name="password_confirm">Confirm Password: </string>
-    <string name="christmas_edition">Christmas Edition</string>
-    <string name="please_wait">Please Wait...</string>
-    <string name="creating_user">Creating user...</string>
-    <string name="logging_in_user">Loging in user...</string>
-    <string name="create_user_success">User created successfully!</string>
-    <string name="logged_in_user_success">User logged in successfully!</string>
-    <string name="create_user_fail">Failed to create user!</string>
-    <string name="login_user_fail">Failed to login user!</string>
-    <string name="verify_error">Passwords do not match!</string>
-    <string name="create">create</string>
-    <string name="cancel">Cancel</string>
 
-    <string name="verify">Verify</string>
-    <string name="remember_me">Remember me</string>
-    <string name="instructions">How To Play</string>
+    <string name="title_activity_game">Game Activity</string>
+    <string name="title_activity_end_game">Game End Activity</string>
+    <string name="please_wait">Pleas Wait...</string>
+    <string name="waiting_for_p2">Waiting For Player 2!</string>
+    <string name="waiting_for_other_player">Waiting for other player...</string>
+    <string name="initializing">Initializing game...</string>
+    <string name="init_fail">Failed to initialize</string>
     <string name="quit_game">Quit Game</string>
     <string name="quit_game_confirmation">Are you sure you want to quit the game?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="steampunked_logo">Steampunked logo.</string>
-    <string name="logging_in">Logging in...</string>
-    <string name="login_fail">Failed to log in</string>
-    <string name="login_success">Successfully logged in</string>
-    <string name="password_length_error">Password must be at least 8 characters</string>
-    <string name="logout">Logout</string>
-
-    <string name="waiting_for_p1">Waiting for first player...</string>
-    <string name="waiting_for_p2">Waiting for second player...</string>
-    <string name="initializing">Initializing game...</string>
-    <string name="init_fail">Failed to join game</string>
-    <string name="loading_game">Loading game...</string>
-    <string name="loading_fail">Failed to load game, trying again.</string>
+    <string name="your_turn">Your turn</string>
     <string name="waiting_for">Waiting for</string>
-    <string name="uploading">Uploading game...</string>
-    <string name="upload_fail">Failed to upload game, trying again.</string>
+    <string name="uploading">Uploading game</string>
+    <string name="upload_fail">Uploading game failed!</string>
+    <string name="loading_game">Loading game...</string>
+    <string name="loading_fail">Loading game failed!</string>
+    <string name="invalid_connection">Invalid connection!</string>
+    <string name="verify_error">Verification error!</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="logging_in_user">Logging in user...</string>
+    <string name="logged_in_user_success">User successfully logged in!</string>
+    <string name="creating_user">Creating new user...</string>
+    <string name="create_user_success">User created successfully!</string>
+    <string name="create_user_fail">User creation failed!</string>
     <string name="Logout">Logout</string>
-    <string name="waiting_for_other_player">Waiting for other player...</string>
-    <string name="waiting_for_upload">Waitng for upload...</string>
+    <string name="login_user_fail">User failed to login!</string>
+
 
 </resources>

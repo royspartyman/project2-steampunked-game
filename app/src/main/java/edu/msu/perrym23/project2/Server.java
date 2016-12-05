@@ -25,18 +25,18 @@ import edu.msu.perrym23.project2.GameActivity;
 
 public class Server {
 
-    private static final String LOGIN_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php";
-    private static final String CREATE_USER_URL = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/newuser.php";
-    private static final String CREATE_NEW_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/newgame.php";
-    private static final String JOIN_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/joingame.php";
-    private static final String UPDATE_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/updategame.php";
-    private static final String GET_GAME_STATUS = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getgamestatus.php";
-    private static final String QUIT_GAME = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
-    private static final String GAME_READY = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
-    private static final String CHANGE_TURN = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
-    private static final String GET_PLAYER_TWO = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayertwo.php";
-    private static final String GET_PLAYER_ONE = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayerone.php";
-    private static final String GET_CURRENT_PLAYER = "http://webdev.cse.msu.edu/~perrym23/cse476/project2/getcurrentplayer.php";
+    private static final String LOGIN_URL = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php";
+    private static final String CREATE_USER_URL = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/newuser.php";
+    private static final String CREATE_NEW_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/newgame.php";
+    private static final String JOIN_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/joingame.php";
+    private static final String UPDATE_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/updategame.php";
+    private static final String GET_GAME_STATUS = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getgamestatus.php";
+    private static final String QUIT_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
+    private static final String GAME_READY = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
+    private static final String CHANGE_TURN = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
+    private static final String GET_PLAYER_TWO = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayertwo.php";
+    private static final String GET_PLAYER_ONE = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayerone.php";
+    private static final String GET_CURRENT_PLAYER = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getcurrentplayer.php";
     private static final String UTF8 = "UTF-8";
 
     private boolean cancel = false;

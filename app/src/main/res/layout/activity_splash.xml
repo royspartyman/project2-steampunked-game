@@ -52,9 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_christmas_tree"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/logo"
-                android:layout_toEndOf="@+id/logo"
                 />
         </LinearLayout>
 

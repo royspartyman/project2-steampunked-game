@@ -1,78 +1,155 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context="edu.msu.perrym23.project2.GameActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout"
-        android:baselineAligned="false"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:background="@color/green"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/install"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_wrench"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/red"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    fontPath="fonts/santa.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/install"
+                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/forfeit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_flag_waving"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/red"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    fontPath="fonts/santa.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/forfeit"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/discard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_rubbish_bin"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/red"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    fontPath="fonts/santa.ttf"
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discard"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_gas_pipe"
+                    android:tint="@color/white"
+                    app:backgroundTint="@color/red"
+                    app:elevation="6dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    fontPath="fonts/santa.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:text="@string/open"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/currentPlayer"
-            android:text="@string/your_turn"
-            android:textAlignment="center"
-            android:elegantTextHeight="false"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_weight="2" />
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width = "match_parent"
-            android:layout_height="0dp"
-            android:text="@string/install"
-            android:id="@+id/installButton"
-            android:clickable="true"
-            android:enabled="true"
-            android:onClick="onInstall"
-            android:layout_weight="1" />
+            <TextView
+                fontPath="fonts/santa.ttf"
+                android:id="@+id/currentPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:maxEms="6"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="@string/roy_it_s_your_turn"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
 
-        <Button
-            android:layout_width = "match_parent"
-            android:layout_height="0dp"
-            android:text="@string/discard"
-            android:id="@+id/discardButton"
-            android:onClick="onDiscard"
-            android:layout_weight="1" />
 
-        <Button
-            android:layout_width = "wrap_content"
-            android:layout_height="0dp"
-            android:text="@string/openValve"
-            android:id="@+id/openValveButton"
-            android:onClick="onOpenValve"
-            android:layout_weight="1" />
+        </LinearLayout>
 
-        <Button
-            android:layout_width = "wrap_content"
-            android:layout_height="0dp"
-            android:text="@string/surrender"
-            android:id="@+id/surrender"
-            android:onClick="onSurrender"
-            android:layout_weight="1" />
     </LinearLayout>
 
     <edu.msu.perrym23.project2.GameView
+        android:id="@+id/gameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gameView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/linearLayout"
-        android:layout_toEndOf="@+id/linearLayout" />
-
-</RelativeLayout>
+        android:background="@color/white" />
+</LinearLayout>

@@ -57,20 +57,11 @@ public class GameActivity extends AppCompatActivity {
 
     TimerTask waitForP2Timer;
     TimerTask waitForMyTurn;
-    TimerTask idleHandler;
-
-    private boolean isPlayerTwoFirst = false;
-
-    private Integer waitPlayerTwoCounter = 0;
-    private Integer waitPlayerTurn = 0;
-
+    private boolean timeUp = false;
 
     private GameView.dimension gameSize = null;
     private boolean isFirstTime = true;
     private String boardSize = null;
-
-    private Integer waitingCounter = 0;
-    private Integer idleCounter = 0;
 
     private boolean isWaitForPlayerTwo = false;
     private boolean isWaitForMyTurn = false;
@@ -158,7 +149,6 @@ public class GameActivity extends AppCompatActivity {
             } else {
                 getGameView().initialize(intent);
                 getInitialGame();
-                isPlayerTwoFirst = true;
                 isFirstTime = false;
             }
         }
@@ -250,10 +240,6 @@ public class GameActivity extends AppCompatActivity {
 
     public void setWaitForMyTurn() {
         if(isGameOver) { return; }
-        if(!isPlayerTwoFirst){
-            isPlayerTwoFirst = false;
-            idleHandler.cancel();
-        }
         progressDialog = ProgressDialog.show(GameActivity.this,
                 getString(R.string.please_wait),
                 getString(R.string.waiting_for_other_player), true, false);
@@ -274,11 +260,6 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             checkTurn(myName);
-                            waitPlayerTurn +=1;
-                            if(waitPlayerTurn == 20){
-                                quitGame();
-                                waitForMyTurn.cancel();
-                            }
                             Log.i("check turn", "checking");
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
@@ -288,30 +269,6 @@ public class GameActivity extends AppCompatActivity {
             }
         };
         timer.schedule(waitForMyTurn, 0, 3000); //execute in every 50000 ms
-    }
-
-    public void setIdleWaiter() {
-        final Handler handler = new Handler();
-        Timer timer = new Timer();
-        idleHandler = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                           idleCounter +=1;
-                            if(idleCounter == 8){
-                                forfeitFAB.performClick();
-                                idleHandler.cancel();
-                            }
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(idleHandler, 0, 5000); //execute in every 50000 ms
     }
 
     private void changeTurn(final String usr) {
@@ -359,7 +316,6 @@ public class GameActivity extends AppCompatActivity {
                     if(!getGameView().isInitialized() && gameSize != null) {
                         getGameView().initialize(gameSize);
                     }
-                    waitPlayerTurn = 0;
                     loadGameState();
                     startGame();
                     waitForMyTurn.cancel();
@@ -422,8 +378,6 @@ public class GameActivity extends AppCompatActivity {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        setIdleWaiter();
-        idleCounter = 0;
         startGame = true;
         startTurn();
     }
@@ -593,16 +547,29 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void quitGame() {
-        new AsyncTask<String, Void, Void>() {
 
-            @Override
-            protected Void doInBackground(String... params) {
-                Server server = new Server();
-                server.quitGame(params[0]);
-                return null;
-            }
+        if(timeUp){
+            new AsyncTask<String, Void, Void>() {
+                @Override
+                protected Void doInBackground(String... params) {
+                    Server server = new Server();
+                    server.quitGame(params[0]);
+                    return null;
+                }
 
-        }.execute(myName);
+            }.execute(opponentName);
+        }else{
+            new AsyncTask<String, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(String... params) {
+                    Server server = new Server();
+                    server.quitGame(params[0]);
+                    return null;
+                }
+
+            }.execute(myName);
+        }
 
         Intent intent = new Intent(this, LoginUserActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

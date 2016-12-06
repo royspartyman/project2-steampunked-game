@@ -1,0 +1,56 @@
+
+Project 2 Submission
+
+Group Name:   (please enter)
+
+When you have completed the project, complete the following form and include it with your project. Include this file as a text file in the folder with your project when you turn it in. 
+
+For the Checkpoint, Describe a sequence of operations to create a new account and log onto the server:
+
+A functionality checklist will not be provided for the project. Treat this as you would a request from a client and identify what the client requires. 
+
+Member 1: Roy Perryman
+
+Responsiblity: Server side code, turn changing, quitting game on back button press, style and design of application, xml
+
+
+Member 2: Will Rudnick
+
+Responsiblity: Server side code, activities changing, game ending, quit game, xml
+
+
+
+Member 3: Laura Robb
+
+Responsiblity: Server side code, turns changing, game loading/uploading, xml
+
+
+
+Member 4 (if applicable): 
+
+Responsiblity:
+
+
+Provide instructions on how to reach the first editing activity if the login button is not yet functional.
+
+User account the server-side communications is running under: perrym23
+
+Paths to all server-side scripts: (Such as https://www.cse.msu.edu/~carter/project2/login.php).
+
+Calls in the code to the server (provide a class name and function, or URL used for debugging):
+
+LOGIN_URL = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/login.php";
+CREATE_USER_URL = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/newuser.php";
+CREATE_NEW_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/newgame.php";
+JOIN_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/joingame.php";
+UPDATE_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/updategame.php";
+GET_GAME_STATUS = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getgamestatus.php";
+QUIT_GAME = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/quit.php";
+GAME_READY = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/gameready.php";
+CHANGE_TURN = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/changeturn.php";
+GET_PLAYER_TWO = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayertwo.php";
+GET_PLAYER_ONE = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getplayerone.php";
+GET_CURRENT_PLAYER = "https://webdev.cse.msu.edu/~perrym23/cse476/project2/getcurrentplayer.php";
+
+
+
